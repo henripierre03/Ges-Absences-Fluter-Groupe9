@@ -1,10 +1,12 @@
+import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
+
 class User {
-  final int id;
+  final String id;
   final String nom;
   final String prenom;
   final String email;
   final String password;
-  final String role;
+  final UserRole role;
 
   User({
     required this.id,
@@ -17,21 +19,23 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
+      id: json['_id'],
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
       password: json['password'],
-      role: json['role'],
+      role: UserRole.values.firstWhere(
+        (e) => e.toString().split('.').last == json['role'],
+      ),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
+    '_id': id,
     'nom': nom,
     'prenom': prenom,
     'email': email,
     'password': password,
-    'role': role,
+    'role': role.toString().split('.').last,
   };
 }

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/etudiant/bindings/etudiant_binding.dart';
+import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
@@ -16,5 +18,15 @@ class AppPages {
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
+    GetPage(
+      name: _Paths.ETUDIANT,
+      page: () => const EtudiantView(),
+      binding: EtudiantBinding(),
+    ),
+    GetPage(
+      name: Routes.ETUDIANT,
+      page:() => const EtudiantView(),
+      binding: EtudiantBinding()
+    )
   ];
 }
