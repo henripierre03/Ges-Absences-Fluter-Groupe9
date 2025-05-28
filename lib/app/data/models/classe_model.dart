@@ -1,17 +1,17 @@
-import 'package:frontend_gesabsence/app/data/models/cours_model.dart';
+import 'package:frontend_gesabsence/app/data/models/detail_cours_model.dart';
 
 class Classe {
   final String id;
   final String nom;
-  final List<Cours> cours;
+  final List<DetailCours> detailCours;
 
-  Classe({required this.id, required this.nom, this.cours = const []});
+  Classe({required this.id, required this.nom, this.detailCours = const []});
   factory Classe.fromJson(Map<String, dynamic> json) {
     return Classe(
       id: json['_id'],
       nom: json['nom'],
-      cours: (json['cours'] as List<dynamic>)
-          .map((c) => Cours.fromJson(c as Map<String, dynamic>))
+      detailCours: (json['cours'] as List)
+          .map((c) => DetailCours.fromJson(c as Map<String, dynamic>))
           .toList(),
     );
   }
@@ -19,7 +19,7 @@ class Classe {
     return {
       '_id': id,
       'nom': nom,
-      'cours': cours.map((c) => c.toJson()).toList(),
+      'cours': detailCours.map((c) => c.toJson()).toList(),
     };
   }
 }

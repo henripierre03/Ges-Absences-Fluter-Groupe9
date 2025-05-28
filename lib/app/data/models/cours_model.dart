@@ -1,15 +1,16 @@
 import 'package:frontend_gesabsence/app/core/enums/module_enum.dart';
+import 'package:frontend_gesabsence/app/data/models/detail_cours_model.dart';
 
 class Cours {
   final String id;
   final Module module;
-  final String classeId;
+  final List<DetailCours> detailCours;
   final String salleId;
 
   Cours({
     required this.id,
     required this.module,
-    required this.classeId,
+    this.detailCours = const [],
     required this.salleId,
   });
 
@@ -19,7 +20,9 @@ class Cours {
       module: Module.values.firstWhere(
         (e) => e.toString().split('.').last == json['module'],
       ),
-      classeId: json['classeId'],
+      detailCours: (json['detailCours'] as List)
+          .map((c) => DetailCours.fromJson(c as Map<String, dynamic>))
+          .toList(),
       salleId: json['salleId'],
     );
   }
@@ -27,7 +30,7 @@ class Cours {
     return {
       '_id': id,
       'module': module.toString().split('.').last,
-      'classeId': classeId,
+      'detailCours': detailCours.map((c) => c.toJson()).toList(),
       'salleId': salleId,
     };
   }
