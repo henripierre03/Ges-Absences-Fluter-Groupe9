@@ -1,0 +1,156 @@
+{
+    "etudiants": [
+        {
+            "id": "1",
+            "nom": "Diallo",
+            "prenom": "Fatou",
+            "email": "fatou.diallo@example.com",
+            "password": "passer",
+            "role": "etudiant",
+            "matricule": "ETU001",
+            "niveau": "Licence 1",
+            "classeId": "1"
+        },
+        {
+            "id": "2",
+            "nom": "Diop",
+            "prenom": "Moussa",
+            "email": "moussa.diop@example.com",
+            "password": "passer",
+            "role": "etudiant",
+            "matricule": "ETU002",
+            "niveau": "Licence 1",
+            "classeId": "1"
+        },
+        {
+            "id": "3",
+            "nom": "Fall",
+            "prenom": "Seynabou",
+            "email": "seynabou.fall@example.com",
+            "password": "passer",
+            "role": "etudiant",
+            "matricule": "ETU003",
+            "niveau": "Licence 2",
+            "classeId": "2"
+        }
+    ],
+    "absences": [
+        {
+            "id": "1",
+            "etudiantId": "1",
+            "date": "2025-05-20T08:00:00.000Z",
+            "absence": "nonJustifiee",
+            "justificationId": null,
+            "coursId": "1"
+        },
+        {
+            "id": "2",
+            "etudiantId": "2",
+            "date": "2025-05-20T08:00:00.000Z",
+            "absence": "justifiee",
+            "justificationId": "1",
+            "coursId": "1"
+        }
+    ],
+    "justifications": [
+        {
+            "id": "1",
+            "etudiantId": "2",
+            "date": "2025-05-20T08:00:00.000Z",
+            "justificatif": "Certificat médical",
+            "validation": true
+        }
+    ],
+    "cours": [
+        {
+            "id": "1",
+            "module": "Informatique",
+            "salleId": "1"
+        },
+        {
+            "id": "2",
+            "module": "Mathématiques",
+            "salleId": "2"
+        }
+    ],
+    "detailCours": [
+        {
+            "id": "1",
+            "date": "2025-05-20T08:00:00.000Z",
+            "coursId": "1",
+            "classeId": "1",
+            "heureDebut": "2025-05-20T08:00:00.000Z",
+            "heureFin": "2025-05-20T10:00:00.000Z"
+        },
+        {
+            "id": "2",
+            "date": "2025-05-21T10:00:00.000Z",
+            "coursId": "2",
+            "classeId": "2",
+            "heureDebut": "2025-05-21T10:00:00.000Z",
+            "heureFin": "2025-05-21T12:00:00.000Z"
+        }
+    ],
+    "classes": [
+        {
+            "id": "1",
+            "nom": "L1 Informatique",
+            "cours": [
+                "1"
+            ]
+        },
+        {
+            "id": "2",
+            "nom": "L2 Informatique",
+            "cours": [
+                "2"
+            ]
+        }
+    ],
+    "salles": [
+        {
+            "id": "1",
+            "nom": "Salle A",
+            "capacite": 30,
+            "cours": [
+                "1"
+            ]
+        },
+        {
+            "id": "2",
+            "nom": "Salle B",
+            "capacite": 25,
+            "cours": [
+                "2"
+            ]
+        }
+    ],
+    "users": [
+        {
+            "id": "10",
+            "nom": "Sow",
+            "prenom": "Alioune",
+            "email": "alioune.sow@example.com",
+            "password": "passer",
+            "role": "vigile"
+        },
+        {
+            "id": "11",
+            "nom": "Ba",
+            "prenom": "Awa",
+            "email": "awa.ba@example.com",
+            "password": "passer",
+            "role": "vigile"
+        }
+    ],
+    "anneesScolaires": [
+        {
+            "id": "1",
+            "annee": "2025-05-21T10:00:00.000Z"
+        },
+        {
+            "id": "2",
+            "annee": "2025-05-21T10:00:00.000Z"
+        }
+    ]
+}

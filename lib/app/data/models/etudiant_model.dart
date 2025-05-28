@@ -1,12 +1,14 @@
 import 'package:frontend_gesabsence/app/core/enums/niveau_enum.dart';
 import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
 import 'package:frontend_gesabsence/app/data/models/Absence_model.dart';
+import 'package:frontend_gesabsence/app/data/models/annee_scolaire_model.dart';
 import 'package:frontend_gesabsence/app/data/models/user_model.dart';
 
 class Etudiant extends User {
   final String matricule;
   final Niveau niveau;
   final String classeId;
+  final List<AnneeScolaire> anneesScolaires = [];
   final List<Absence> absences = [];
 
   Etudiant({
