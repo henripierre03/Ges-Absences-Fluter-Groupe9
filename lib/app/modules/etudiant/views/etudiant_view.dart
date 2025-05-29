@@ -7,26 +7,23 @@ class EtudiantView extends GetView<EtudiantController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Liste des Étudiants')),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (controller.etudiants.isEmpty) {
-          return const Center(child: Text('Aucun étudiant trouvé.'));
-        }
-        return ListView.builder(
-          itemCount: controller.etudiants.length,
-          itemBuilder: (_, index) {
-            final etu = controller.etudiants[index];
-            return ListTile(
-              title: Text('${etu.nom} ${etu.prenom}'),
-              subtitle: Text('Matricule: ${etu.matricule}'),
-            );
-          },
-        );
-      }),
-    );
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (controller.etudiants.isEmpty) {
+        return const Center(child: Text('Aucun étudiant trouvé.'));
+      }
+      return ListView.builder(
+        itemCount: controller.etudiants.length,
+        itemBuilder: (_, index) {
+          final etu = controller.etudiants[index];
+          return ListTile(
+            title: Text('${etu.nom} ${etu.prenom}'),
+            subtitle: Text('Matricule: ${etu.matricule}'),
+          );
+        },
+      );
+    });
   }
 }

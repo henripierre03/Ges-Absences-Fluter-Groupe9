@@ -1,3 +1,5 @@
+import 'package:frontend_gesabsence/app/modules/layout/bindings/main_binding.dart';
+import 'package:frontend_gesabsence/app/modules/layout/views/main_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -10,7 +12,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.MAIN;
 
   static final routes = [
     GetPage(
@@ -23,6 +25,10 @@ class AppPages {
       page: () => const EtudiantView(),
       binding: EtudiantBinding(),
     ),
-    // Suppression du doublon - vous aviez la même route définie deux fois
+    GetPage(
+      name: _Paths.MAIN,
+      page: () => const MainView(),
+      binding: MainBinding(),
+    ),
   ];
 }
