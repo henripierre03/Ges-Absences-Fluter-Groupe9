@@ -2,36 +2,27 @@
     "etudiants": [
         {
             "id": "1",
-            "nom": "Diallo",
-            "prenom": "Fatou",
-            "email": "fatou.diallo@example.com",
-            "password": "passer",
-            "role": "etudiant",
-            "matricule": "ETU001",
-            "niveau": "Licence 1",
-            "classeId": "1"
+            "userId": "10",
+            "matricule": "ETU003",
+            "niveau": "Licence 3",
+            "classeId": "1",
+            "qrCode": ""
         },
         {
             "id": "2",
-            "nom": "Diop",
-            "prenom": "Moussa",
-            "email": "moussa.diop@example.com",
-            "password": "passer",
-            "role": "etudiant",
+            "userId": "13",
             "matricule": "ETU002",
             "niveau": "Licence 1",
-            "classeId": "1"
+            "classeId": "1",
+            "qrCode": ""
         },
         {
             "id": "3",
-            "nom": "Fall",
-            "prenom": "Seynabou",
-            "email": "seynabou.fall@example.com",
-            "password": "passer",
-            "role": "etudiant",
+            "userId": "12",
             "matricule": "ETU003",
             "niveau": "Licence 2",
-            "classeId": "2"
+            "classeId": "2",
+            "qrCode": ""
         }
     ],
     "absences": [
@@ -132,7 +123,7 @@
             "prenom": "Alioune",
             "email": "alioune.sow@example.com",
             "password": "passer",
-            "role": "vigile"
+            "role": "etudiant"
         },
         {
             "id": "11",
@@ -141,6 +132,22 @@
             "email": "awa.ba@example.com",
             "password": "passer",
             "role": "vigile"
+        },
+        {
+            "id": "12",
+            "nom": "Diop",
+            "prenom": "Mamadou",
+            "email": "mamadou.diop@example.com",
+            "password": "passer",
+            "role": "etudiant"
+        },
+        {
+            "id": "13",
+            "nom": "Diallo",
+            "prenom": "Fatou",
+            "email": "fatou.diallo@example.com",
+            "password": "passer",
+            "role": "etudiant"
         }
     ],
     "anneesScolaires": [
