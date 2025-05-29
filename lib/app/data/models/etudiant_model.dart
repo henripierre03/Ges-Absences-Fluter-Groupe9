@@ -36,9 +36,7 @@ class Etudiant extends User {
         (e) => e.toString().split('.').last == json['role'],
       ),
       matricule: json['matricule'],
-      niveau: Niveau.values.firstWhere(
-        (e) => e.toString().split('.').last == json['niveau'],
-      ),
+      niveau: NiveauExtension.fromString(json['niveau']),
       classeId: json['classeId'],
       qrCode: json['qrCode'],
     );

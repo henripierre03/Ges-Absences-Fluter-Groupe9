@@ -1,23 +1,36 @@
 {
     "etudiants": [
         {
-            "id": "1",
-            "userId": "10",
+            "_id": "1",
+            "nom": "Sow",
+            "prenom": "Alioune",
+            "email": "alioune.sow@example.com",
+            "password": "passer",
+            "role": "etudiant",
             "matricule": "ETU003",
             "niveau": "Licence 3",
             "classeId": "1",
             "qrCode": ""
         },
         {
-            "id": "2",
-            "userId": "13",
+            "_id": "2",
+            "nom": "Ba",
+            "prenom": "Awa",
+            "email": "awa.ba@example.com",
+            "password": "passer",
+            "role": "etudiant",
             "matricule": "ETU002",
             "niveau": "Licence 1",
             "classeId": "1",
             "qrCode": ""
         },
         {
-            "id": "3",
+            "_id": "3",
+            "nom": "Diallo",
+            "prenom": "Fatou",
+            "email": "fatou.diallo@example.com",
+            "password": "passer",
+            "role": "etudiant",
             "userId": "12",
             "matricule": "ETU003",
             "niveau": "Licence 2",
@@ -27,7 +40,7 @@
     ],
     "absences": [
         {
-            "id": "1",
+            "_id": "1",
             "etudiantId": "1",
             "date": "2025-05-20T08:00:00.000Z",
             "absence": "nonJustifiee",
@@ -35,7 +48,7 @@
             "coursId": "1"
         },
         {
-            "id": "2",
+            "_id": "2",
             "etudiantId": "2",
             "date": "2025-05-20T08:00:00.000Z",
             "absence": "justifiee",
@@ -45,7 +58,7 @@
     ],
     "justifications": [
         {
-            "id": "1",
+            "_id": "1",
             "etudiantId": "2",
             "date": "2025-05-20T08:00:00.000Z",
             "justificatif": "Certificat médical",
@@ -54,19 +67,19 @@
     ],
     "cours": [
         {
-            "id": "1",
+            "_id": "1",
             "module": "Informatique",
             "salleId": "1"
         },
         {
-            "id": "2",
+            "_id": "2",
             "module": "Mathématiques",
             "salleId": "2"
         }
     ],
     "detailCours": [
         {
-            "id": "1",
+            "_id": "1",
             "date": "2025-05-20T08:00:00.000Z",
             "coursId": "1",
             "classeId": "1",
@@ -74,7 +87,7 @@
             "heureFin": "2025-05-20T10:00:00.000Z"
         },
         {
-            "id": "2",
+            "_id": "2",
             "date": "2025-05-21T10:00:00.000Z",
             "coursId": "2",
             "classeId": "2",
@@ -84,14 +97,14 @@
     ],
     "classes": [
         {
-            "id": "1",
+            "_id": "1",
             "nom": "L1 Informatique",
             "cours": [
                 "1"
             ]
         },
         {
-            "id": "2",
+            "_id": "2",
             "nom": "L2 Informatique",
             "cours": [
                 "2"
@@ -100,7 +113,7 @@
     ],
     "salles": [
         {
-            "id": "1",
+            "_id": "1",
             "nom": "Salle A",
             "capacite": 30,
             "cours": [
@@ -108,7 +121,7 @@
             ]
         },
         {
-            "id": "2",
+            "_id": "2",
             "nom": "Salle B",
             "capacite": 25,
             "cours": [
@@ -118,7 +131,7 @@
     ],
     "users": [
         {
-            "id": "10",
+            "_id": "10",
             "nom": "Sow",
             "prenom": "Alioune",
             "email": "alioune.sow@example.com",
@@ -126,7 +139,7 @@
             "role": "etudiant"
         },
         {
-            "id": "11",
+            "_id": "11",
             "nom": "Ba",
             "prenom": "Awa",
             "email": "awa.ba@example.com",
@@ -134,7 +147,7 @@
             "role": "vigile"
         },
         {
-            "id": "12",
+            "_id": "12",
             "nom": "Diop",
             "prenom": "Mamadou",
             "email": "mamadou.diop@example.com",
@@ -142,7 +155,7 @@
             "role": "etudiant"
         },
         {
-            "id": "13",
+            "_id": "13",
             "nom": "Diallo",
             "prenom": "Fatou",
             "email": "fatou.diallo@example.com",
@@ -152,11 +165,11 @@
     ],
     "anneesScolaires": [
         {
-            "id": "1",
+            "_id": "1",
             "annee": "2025-05-21T10:00:00.000Z"
         },
         {
-            "id": "2",
+            "_id": "2",
             "annee": "2025-05-21T10:00:00.000Z"
         }
     ]

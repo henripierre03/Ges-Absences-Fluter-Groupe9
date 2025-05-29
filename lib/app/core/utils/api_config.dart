@@ -3,7 +3,7 @@ class ApiConfig {
 
   static String get baseUrl {
     return useMock
-        ? 'http://localhost:3000' // JSON Server
+        ? 'http://192.168.1.2:3000' // JSON Server
         : 'http://192.168.1.5:8080/api'; // Backend Spring (exemple IP locale)
   }
 }
