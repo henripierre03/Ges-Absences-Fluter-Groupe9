@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justifiaction_view.dart';
 import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 
 import 'package:get/get.dart';
@@ -19,10 +20,19 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.toNamed(Routes.ETUDIANT); // ✅ Bonne pratique
+                Get.toNamed(Routes.ETUDIANT);
               },
               child: const Text('Aller à la page Étudiant'),
             ),
+            ElevatedButton(
+  onPressed: () {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.toNamed(Routes.ETUDIANT_JUSTIFICATION);
+    });
+  },
+  child: const Text('Aller à la page Justification Étudiant (Named Route)'),
+),
+
           ],
         ),
       ),

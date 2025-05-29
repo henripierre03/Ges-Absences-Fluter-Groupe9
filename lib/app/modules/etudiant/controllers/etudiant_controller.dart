@@ -1,4 +1,6 @@
+import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
+import 'package:frontend_gesabsence/app/data/providers/etudiant_provider.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
 import 'package:get/get.dart';
 
@@ -13,27 +15,10 @@ class EtudiantController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchEtudiants();
+    // etudiantProvider.fetchEtudiants();
   }
-
-  Future<void> fetchEtudiants() async {
-    try {
-      isLoading.value = true;
-      hasError.value = false;
-      errorMessage.value = '';
-      final fetchedEtudiants = await apiEtudiant.getEtudiants();
-      etudiants.value = fetchedEtudiants;
-    } catch (e) {
-      hasError.value = true;
-      errorMessage.value = e.toString();
-      etudiants.value = [];
-      Get.snackbar(
-        'Erreur',
-        'Impossible de récupérer les étudiants',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isLoading.value = false;
-    }
+  Future<void> createJustificationAndUpdateAbsence(
+      JustificationCreateRequestDto justification, String absenceId) async {
+    await etudiantProvider.createJustificationAndUpdateAbsence(justification, absenceId);
   }
 }

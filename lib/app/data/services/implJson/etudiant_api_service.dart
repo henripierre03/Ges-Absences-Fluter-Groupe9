@@ -1,35 +1,36 @@
 import 'dart:convert';
-
 import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
+import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
+import 'package:frontend_gesabsence/app/data/services/base_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
-class EtudiantApiServiceImplJson implements IEtudiantApiService {
-  final String baseUrl = ApiConfig.baseUrl;
+class EtudiantApiServiceImplJson extends BaseApiService implements IEtudiantApiService {
+  EtudiantApiServiceImplJson() : super(baseUrl: ApiConfig.baseUrl);
 
-  @override
-  Future<List<Etudiant>> getEtudiants() async {
-    try {
-      final response = await http.get(Uri.parse('$baseUrl/etudiants'));
-      if (response.statusCode == 200) {
-        final dynamic responseData = jsonDecode(response.body);
-        
-        if (responseData is Map<String, dynamic> && responseData.containsKey('etudiants')) {
-          final List<dynamic> etudiantsData = responseData['etudiants'];
-          return etudiantsData.map((e) => Etudiant.fromJson(e)).toList();
-        } 
-        else if (responseData is List<dynamic>) {
-          return responseData.map((e) => Etudiant.fromJson(e)).toList();
-        } else {
-          throw Exception('Format de réponse inattendu');
-        }
+  Future<Etudiant> getEtudiantByUserId(String userId) async {
+    final response = await client.get(Uri.parse('$baseUrl/etudiants?userId=$userId'));
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+      if (body.isNotEmpty) {
+        return Etudiant.fromJson(body.first);
       } else {
-        throw Exception('Erreur de chargement des étudiants: ${response.statusCode}');
+        throw Exception('No student found with userId: $userId');
       }
-    } catch (e) {
-      print('Erreur dans getEtudiants: $e');
-      throw Exception('Erreur de chargement des étudiants: $e');
+    } else {
+      throw Exception('Failed to load student with userId: $userId');
     }
   }
+
+  Future<List<Absence>> getAbsencesByEtudiantId(String etudiantId) async {
+    final response = await client.get(Uri.parse('$baseUrl/absences?etudiantId=$etudiantId'));
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+      return body.map((dynamic item) => Absence.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load absences for student with id: $etudiantId');
+    }
+  }
+  
 }

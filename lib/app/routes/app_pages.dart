@@ -1,3 +1,4 @@
+import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justifiaction_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -11,18 +12,27 @@ class AppPages {
   AppPages._();
 
   static const INITIAL = Routes.HOME;
-
+  static final etudiantBinding = EtudiantBinding();
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
+    // GetPage(
+    //   name: _Paths.ETUDIANT,
+    //   page: () => const EtudiantView(),
+    //   binding: EtudiantBinding(),
+    // ),
     GetPage(
-      name: _Paths.ETUDIANT,
+      name: Routes.ETUDIANT,
       page: () => const EtudiantView(),
-      binding: EtudiantBinding(),
+      binding: etudiantBinding,
     ),
-    // Suppression du doublon - vous aviez la même route définie deux fois
+    GetPage(
+      name: Routes.ETUDIANT_JUSTIFICATION,
+      page: () => const EtudiantJustificationView(),
+      binding: etudiantBinding,
+    ),
   ];
 }
