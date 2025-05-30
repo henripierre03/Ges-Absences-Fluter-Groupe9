@@ -19,7 +19,6 @@ class VigileView extends GetView<VigileController> {
             children: [
               const SizedBox(height: 40),
 
-              // Titre
               const Text(
                 'Scan QR Code de l\'étudiant',
                 style: TextStyle(
@@ -32,7 +31,6 @@ class VigileView extends GetView<VigileController> {
 
               const SizedBox(height: 30),
 
-              // Zone de scan QR Code
               GestureDetector(
                 onTap: () => _openQRScanner(context),
                 child: Container(
@@ -51,7 +49,6 @@ class VigileView extends GetView<VigileController> {
                       ),
                       child: Stack(
                         children: [
-                          // Zone de scan simulée
                           Center(
                             child: Container(
                               width: 200,
@@ -71,7 +68,6 @@ class VigileView extends GetView<VigileController> {
                             ),
                           ),
 
-                          // Ligne de scan animée
                           Positioned(
                             left: 30,
                             right: 30,
@@ -92,9 +88,6 @@ class VigileView extends GetView<VigileController> {
                               ),
                             ),
                           ),
-
-                          // Coins de cadrage
-                          // Coin supérieur gauche
                           const Positioned(
                             top: 40,
                             left: 40,
@@ -143,7 +136,6 @@ class VigileView extends GetView<VigileController> {
 
               const SizedBox(height: 15),
 
-              // Texte d'instruction
               const Text(
                 'The QR Code will be automatically detected\nwhen you position it between the guide lines',
                 style: TextStyle(fontSize: 14, color: Colors.black54),
@@ -208,31 +200,47 @@ class VigileView extends GetView<VigileController> {
                             ),
                           ),
                         ),
+                        onSubmitted: (value) => _validateSearch(),
                       ),
                     ),
 
                     const SizedBox(height: 15),
 
-                    // Bouton Valider
-                    SizedBox(
-                      width: double.infinity,
-                      height: 45,
-                      child: ElevatedButton(
-                        onPressed: () => _validateSearch(),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    // Bouton Valider avec état de chargement
+                    Obx(
+                      () => SizedBox(
+                        width: double.infinity,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: controller.isLoading.value
+                              ? null
+                              : () => _validateSearch(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
                           ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Valider',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          child: controller.isLoading.value
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Text(
+                                  'Valider',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -242,7 +250,7 @@ class VigileView extends GetView<VigileController> {
 
               const SizedBox(height: 40),
 
-              const SizedBox(height: 20), // Extra padding at bottom
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -280,9 +288,7 @@ class VigileView extends GetView<VigileController> {
   void _validateSearch() {
     final searchText = controller.searchController.text.trim();
     if (searchText.isNotEmpty) {
-      // Implémentez votre logique de recherche ici
-      print('Recherche pour: $searchText');
-      // controller.searchStudent(searchText);
+      controller.searchStudent(searchText);
     } else {
       Get.snackbar(
         'Erreur',

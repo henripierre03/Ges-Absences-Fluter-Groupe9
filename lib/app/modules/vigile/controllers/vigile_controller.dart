@@ -1,15 +1,23 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
+import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
+import 'package:frontend_gesabsence/app/widgets/student_info_dialog.dart';
 import 'package:get/get.dart';
 
 class VigileController extends GetxController {
   late TextEditingController searchController;
-  final count = 0.obs;
+  final IEtudiantApiService etudiantApiService;
+
+  // Observable pour l'état de chargement
+  final isLoading = false.obs;
+
+  VigileController({required this.etudiantApiService});
+
   @override
   void onInit() {
     super.onInit();
     searchController = TextEditingController();
   }
-
 
   @override
   void onClose() {
@@ -17,28 +25,54 @@ class VigileController extends GetxController {
     super.onClose();
   }
 
-  // Méthode pour rechercher un étudiant par matricule
-  void searchStudent(String matricule) {
-    // Implémentez votre logique de recherche ici
-    print('Recherche étudiant avec matricule: $matricule');
+  Future<void> searchStudent(String matricule) async {
+    if (matricule.trim().isEmpty) {
+      Get.snackbar(
+        'Erreur',
+        'Veuillez entrer un matricule',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
 
-    // Exemple d'appel API
-    // try {
-    //   final student = await studentService.getStudentByMatricule(matricule);
-    //   // Traiter le résultat
-    // } catch (e) {
-    //   Get.snackbar('Erreur', 'Étudiant non trouvé');
-    // }
+    try {
+      isLoading.value = true;
+      final List<Etudiant> etudiants = await etudiantApiService
+          .getEtudiantByMatricule(matricule.trim());
+
+      if (etudiants.isNotEmpty) {
+        final etudiant = etudiants.first;
+        showStudentInfoPopup(etudiant);
+      } else {
+        Get.snackbar(
+          'Aucun résultat',
+          'Aucun étudiant trouvé avec le matricule: $matricule',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Erreur',
+        'Erreur lors de la recherche: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 4),
+      );
+      print('Erreur dans searchStudent: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void handleQRScan(String qrData) {
-    // Traiter les données du QR code
     print('QR Code scanné: $qrData');
-
-    // Si le QR contient un matricule, l'utiliser pour la recherche
     searchController.text = qrData;
     searchStudent(qrData);
   }
-
-  void increment() => count.value++;
 }

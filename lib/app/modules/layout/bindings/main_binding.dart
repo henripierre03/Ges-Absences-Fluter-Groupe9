@@ -8,11 +8,16 @@ import 'package:get/get.dart';
 class MainBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => EtudiantApiServiceImplJson());
     Get.lazyPut<MainController>(() => MainController());
 
     // Injecte ici les autres controllers/services dont MainView a besoin
     Get.lazyPut<IEtudiantApiService>(() => EtudiantApiServiceImplJson());
     Get.lazyPut<EtudiantController>(() => EtudiantController());
-    Get.lazyPut<VigileController>(() => VigileController());
+    Get.lazyPut<VigileController>(
+      () => VigileController(
+        etudiantApiService: Get.find<EtudiantApiServiceImplJson>(),
+      ),
+    );
   }
 }

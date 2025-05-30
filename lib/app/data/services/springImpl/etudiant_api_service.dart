@@ -10,6 +10,14 @@ class EtudiantApiService implements IEtudiantApiService {
     // TODO: implement getEtudiants
     throw UnimplementedError();
   }
+  
+  @override
+  Future<List<Etudiant>> getEtudiantByMatricule(String matricule) {
+    // TODO: implement getEtudiantByMatricule
+    throw UnimplementedError();
+  }
+  
+  
 
   
 }
