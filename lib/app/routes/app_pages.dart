@@ -1,5 +1,3 @@
-import 'package:frontend_gesabsence/app/modules/parametres/bindings/parametres_binding.dart';
-import 'package:frontend_gesabsence/app/modules/parametres/views/parametres_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -8,7 +6,10 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/layout/bindings/main_binding.dart';
 import '../modules/layout/views/main_view.dart';
-
+import '../modules/parametres/bindings/parametres_binding.dart';
+import '../modules/parametres/views/parametres_view.dart';
+import '../modules/vigile/bindings/vigile_binding.dart';
+import '../modules/vigile/views/vigile_view.dart';
 
 part 'app_routes.dart';
 
@@ -30,13 +31,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MAIN,
-      page: () =>  MainView(),
+      page: () => MainView(),
       binding: MainBinding(),
     ),
     GetPage(
       name: _Paths.PARAMETRES,
       page: () => const ParametresView(),
       binding: ParametresBinding(),
+    ),
+    GetPage(
+      name: _Paths.VIGILE,
+      page: () => const VigileView(),
+      binding: VigileBinding(),
     ),
   ];
 }
