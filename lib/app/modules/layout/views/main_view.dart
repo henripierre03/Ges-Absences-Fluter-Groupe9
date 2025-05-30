@@ -12,11 +12,100 @@ class MainView extends GetView<MainController> {
 
   final List<String> titles = ['Paramètres', 'Accueil', 'Étudiants'];
 
+  // Fonction pour obtenir le salut selon l'heure
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Bonjour';
+    } else if (hour < 17) {
+      return 'Bon après-midi';
+    } else {
+      return 'Bonsoir';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: AppBar(title: Text(titles[controller.selectedIndex.value])),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          toolbarHeight: 80,
+          title: Row(
+            children: [
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${_getGreeting()}, ',
+                        style: const TextStyle(
+                          color: Color(0xFFFF6B00),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: 'Chère Vigile',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black87,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Container(
+                  margin: const EdgeInsets.all(3),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.all(3),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFFF6B00),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset(
+                        'assets/images/avatar.png', // Remplacez par le chemin de votre image
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Widget de fallback si l'image n'est pas trouvée
+                          return const Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 24,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         body: IndexedStack(
           index: controller.selectedIndex.value,
           children: pages,
@@ -76,8 +165,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     // Inverser l'icône de logout
     IconData displayIcon = icon;
     if (icon == Icons.logout) {
-      displayIcon =
-          Icons.login;
+      displayIcon = Icons.login;
     }
 
     return AnimatedContainer(
