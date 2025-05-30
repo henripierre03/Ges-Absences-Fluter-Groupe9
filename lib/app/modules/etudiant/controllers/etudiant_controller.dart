@@ -1,24 +1,52 @@
 import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
-import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
-import 'package:frontend_gesabsence/app/data/providers/etudiant_provider.dart';
+import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
+import 'package:frontend_gesabsence/app/data/services/implJson/justification_api_service.dart';
 import 'package:get/get.dart';
 
 class EtudiantController extends GetxController {
   final IEtudiantApiService apiEtudiant = Get.find();
+  final JustificationApiServiceImplJson justificationApiService = Get.find();
 
-  var etudiants = <Etudiant>[].obs;
+  var absences = <Absence>[].obs;
   var isLoading = false.obs;
-  var hasError = false.obs;
   var errorMessage = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // etudiantProvider.fetchEtudiants();
+    final arguments = Get.arguments;
+    if (arguments != null && arguments is Map<String, dynamic>) {
+      final etudiantId = arguments['etudiantId'];
+      fetchAbsencesByEtudiantId(etudiantId);
+    }
   }
+
+  Future<void> fetchAbsencesByEtudiantId(String etudiantId) async {
+    try {
+      isLoading.value = true;
+      var fetchedAbsences = await apiEtudiant.getAbsencesByEtudiantId(etudiantId);
+      absences.assignAll(fetchedAbsences);
+    } catch (e) {
+      errorMessage.value = 'Failed to load absences: $e';
+      Get.snackbar('Error', errorMessage.value);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> createJustificationAndUpdateAbsence(
       JustificationCreateRequestDto justification, String absenceId) async {
-    await etudiantProvider.createJustificationAndUpdateAbsence(justification, absenceId);
+    try {
+      final justificationResponse = await justificationApiService.createJustification(justification);
+      await justificationApiService.updateAbsence(absenceId, {
+        "absence": "justifiee",
+        "justificationId": justificationResponse.id,
+      });
+      Get.snackbar('Success', 'Justification submitted successfully');
+    } catch (e) {
+      errorMessage.value = 'Failed to create justification: $e';
+      Get.snackbar('Error', errorMessage.value);
+    }
   }
 }

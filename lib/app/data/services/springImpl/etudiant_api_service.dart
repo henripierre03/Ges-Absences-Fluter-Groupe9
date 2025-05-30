@@ -38,4 +38,14 @@ class EtudiantApiService implements IEtudiantApiService {
     // TODO: implement getAbsencesByEtudiantId
     throw UnimplementedError();
   }
+  
+  
+  
+  @override
+  Future<List<Absence?>> getAllAbsences() {
+    // TODO: implement getAllAbsences
+    throw UnimplementedError();
+  }
+  
+  
 }

@@ -5,5 +5,6 @@ import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 abstract class IEtudiantApiService {
   Future<Etudiant> getEtudiantByUserId(String id);
   Future<List<Absence>> getAbsencesByEtudiantId(String etudiantId);
+  Future<List<Absence?>> getAllAbsences();
 
 }

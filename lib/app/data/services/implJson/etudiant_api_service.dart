@@ -1,36 +1,45 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
 import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 import 'package:frontend_gesabsence/app/data/services/base_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
-// import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 class EtudiantApiServiceImplJson extends BaseApiService implements IEtudiantApiService {
   EtudiantApiServiceImplJson() : super(baseUrl: ApiConfig.baseUrl);
 
+  @override
   Future<Etudiant> getEtudiantByUserId(String userId) async {
-    final response = await client.get(Uri.parse('$baseUrl/etudiants?userId=$userId'));
+    final response = await http.get(Uri.parse('$baseUrl/etudiants/$userId'));
+
     if (response.statusCode == 200) {
-      List<dynamic> body = json.decode(response.body);
-      if (body.isNotEmpty) {
-        return Etudiant.fromJson(body.first);
-      } else {
-        throw Exception('No student found with userId: $userId');
-      }
+      return Etudiant.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load student with userId: $userId');
     }
   }
 
-  Future<List<Absence>> getAbsencesByEtudiantId(String etudiantId) async {
-    final response = await client.get(Uri.parse('$baseUrl/absences?etudiantId=$etudiantId'));
+  @override
+  Future<List<Absence>> getAllAbsences() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/absences'),
+      headers: {'Content-Type': 'application/json'},
+    ).timeout(const Duration(seconds: 10));
+
     if (response.statusCode == 200) {
       List<dynamic> body = json.decode(response.body);
-      return body.map((dynamic item) => Absence.fromJson(item)).toList();
+      return body.map((item) => Absence.fromJson(item)).toList();
     } else {
-      throw Exception('Failed to load absences for student with id: $etudiantId');
+      throw Exception('Failed to load absences: ${response.statusCode}');
     }
+  }
+
+  Future<List<Absence>> getAbsencesByEtudiantId(String etudiantId) async {
+    final allAbsences = await getAllAbsences();
+    return allAbsences.where((absence) => absence.etudiantId == etudiantId).toList();
   }
   
 }
+

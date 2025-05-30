@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
 import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
 import 'package:frontend_gesabsence/app/data/dto/response/justification_response.dart';
 import 'package:frontend_gesabsence/app/data/services/base_api_service.dart';
@@ -8,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class JustificationApiServiceImplJson extends BaseApiService implements IJustificationApiService {
   JustificationApiServiceImplJson({http.Client? client})
-      : super(baseUrl: "http://10.0.2.2:3000", client: client);
+      : super(baseUrl: ApiConfig.baseUrl);
 
   @override
   Future<JustificationResponseDto> createJustification(
