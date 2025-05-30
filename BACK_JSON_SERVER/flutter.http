@@ -6,3 +6,19 @@ GET http://localhost:3000/justifications
 ###
 
 GET http://localhost:3000/absences
+
+
+###
+
+POST http://localhost:3000/justifications
+Content-Type: application/json
+
+{
+  "id": "1",
+  "etudiantId": "1",
+  "date": "2025-05-20T08:00:00.000Z",
+  "justificatif": "Maladie",
+  "validation": false
+  
+}
+###

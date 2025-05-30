@@ -26,36 +26,29 @@ class LoginApiServiceImplJson extends BaseApiService
   }
 
   @override
-Future<List<Etudiant>> getAllEtudiants() async {
-  final client = http.Client();
-  try {
-    final response = await client
-        .get(Uri.parse('$baseUrl/etudiants'))
-        .timeout(const Duration(seconds: 10));
+  Future<List<Etudiant>> getAllEtudiants() async {
+    final client = http.Client();
+    try {
+      final response = await client
+          .get(Uri.parse('$baseUrl/etudiants'))
+          .timeout(const Duration(seconds: 10));
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode == 200) {
-      List<dynamic> body = json.decode(response.body);
-      return body.map((item) => Etudiant.fromJson(item)).toList();
-    } else {
-      throw Exception(
-        'Failed to load students: Server returned status code ${response.statusCode}',
-      );
+      if (response.statusCode == 200) {
+        List<dynamic> body = json.decode(response.body);
+        return body.map((item) => Etudiant.fromJson(item)).toList();
+      } else {
+        throw Exception(
+          'Failed to load students: Server returned status code ${response.statusCode}',
+        );
+      }
+    } on TimeoutException catch (_) {
+      throw Exception('Connection timed out. Please try again later.');
+    } on SocketException catch (_) {
+      throw Exception('Network error: Unable to connect to the server.');
+    } catch (e) {
+      throw Exception('An error occurred: $e');
+    } finally {
+      client.close();
     }
-  } on TimeoutException catch (_) {
-    print('Connection timed out');
-    throw Exception('Connection timed out. Please try again later.');
-  } on SocketException catch (_) {
-    print('Network error: Unable to connect to the server');
-    throw Exception('Network error: Unable to connect to the server.');
-  } catch (e) {
-    print('An error occurred: $e');
-    throw Exception('An error occurred: $e');
-  } finally {
-    client.close();
   }
-}
-
 }

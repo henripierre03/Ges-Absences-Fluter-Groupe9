@@ -1,5 +1,6 @@
 import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
 import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
+import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart'; // Add this import
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/implJson/justification_api_service.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ class EtudiantController extends GetxController {
   final JustificationApiServiceImplJson justificationApiService = Get.find();
 
   var absences = <Absence>[].obs;
+  var etudiant = Rxn<Etudiant>(); // Add this line to store the student data
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
@@ -18,7 +20,26 @@ class EtudiantController extends GetxController {
     final arguments = Get.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final etudiantId = arguments['etudiantId'];
-      fetchAbsencesByEtudiantId(etudiantId);
+      fetchEtudiantData(etudiantId);
+    }
+  }
+
+  Future<void> fetchEtudiantData(String etudiantId) async {
+    try {
+      isLoading.value = true;
+      
+      // Fetch both student data and absences
+      final fetchedEtudiant = await apiEtudiant.getEtudiantById(etudiantId);
+      final fetchedAbsences = await apiEtudiant.getAbsencesByEtudiantId(etudiantId);
+      
+      etudiant.value = fetchedEtudiant;
+      absences.assignAll(fetchedAbsences);
+      
+    } catch (e) {
+      errorMessage.value = 'Failed to load student data: $e';
+      Get.snackbar('Error', errorMessage.value);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -49,4 +70,7 @@ class EtudiantController extends GetxController {
       Get.snackbar('Error', errorMessage.value);
     }
   }
+
+  // Getter for easy access to matricule
+  String get matricule => etudiant.value?.matricule ?? '';
 }

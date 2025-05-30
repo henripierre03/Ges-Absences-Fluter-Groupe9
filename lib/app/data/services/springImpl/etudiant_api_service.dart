@@ -47,5 +47,17 @@ class EtudiantApiService implements IEtudiantApiService {
     throw UnimplementedError();
   }
   
+  @override
+  Future<List<Etudiant>> getAllEtudiants() {
+    // TODO: implement getAllEtudiants
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Etudiant> getEtudiantById(String id) {
+    // TODO: implement getEtudiantById
+    throw UnimplementedError();
+  }
+  
   
 }
