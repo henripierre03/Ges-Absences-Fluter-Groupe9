@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_gesabsence/app/routes/app_pages.dart';
+import 'package:frontend_gesabsence/app/modules/layout/controllers/main_controller.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 
@@ -15,7 +15,7 @@ class HomeView extends GetView<HomeController> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Get.toNamed(Routes.ETUDIANT);
+              Get.find<MainController>().changeTab(2);
             },
             child: const Text('Aller à la page Étudiant'),
           ),
