@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 
 import 'package:get/get.dart';
 
-
+import '../controllers/home_controller.dart';
+import '../../etudiant/views/etudiant_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -18,7 +20,7 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.to(() => const EtudiantView());
+                Get.toNamed(Routes.ETUDIANT); // ✅ Bonne pratique
               },
               child: const Text('Aller à la page Étudiant'),
             ),

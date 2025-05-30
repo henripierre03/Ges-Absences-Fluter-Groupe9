@@ -23,10 +23,6 @@ class AppPages {
       page: () => const EtudiantView(),
       binding: EtudiantBinding(),
     ),
-    GetPage(
-      name: Routes.ETUDIANT,
-      page:() => const EtudiantView(),
-      binding: EtudiantBinding()
-    )
+    // Suppression du doublon - vous aviez la même route définie deux fois
   ];
 }
