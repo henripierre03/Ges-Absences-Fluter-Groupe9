@@ -1,17 +1,20 @@
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
+import '../modules/etudiant/views/etudiant_justifiaction_view.dart';
 import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/login/bindings/login_binding.dart';
+import '../modules/login/views/login_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
-
+  static const INITIAL = Routes.LOGIN; // Change initial route to login
+  static final etudiantBinding = EtudiantBinding();
   static final routes = [
     GetPage(
       name: _Paths.HOME,
@@ -19,10 +22,23 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.ETUDIANT,
+      name: Routes.ETUDIANT,
       page: () => const EtudiantView(),
-      binding: EtudiantBinding(),
+      binding: etudiantBinding,
     ),
-    // Suppression du doublon - vous aviez la même route définie deux fois
+    GetPage(
+      name: Routes.ETUDIANT_JUSTIFICATION,
+      page: () => const EtudiantJustificationView(),
+      binding: etudiantBinding,
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => const LoginView(),
+      binding: LoginBinding(),
+    ),
   ];
 }
+
+
+
+
