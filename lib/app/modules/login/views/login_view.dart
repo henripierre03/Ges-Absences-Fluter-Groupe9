@@ -7,11 +7,6 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    // Fetch the list of students when the view is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.getAllEtudiant();
-    });
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -20,52 +15,19 @@ class LoginView extends GetView<LoginController> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: 80),
                 
                 // Header
                 const Text(
                   'Connexion',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 28,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF351F16),
                   ),
                 ),
                 
-                const SizedBox(height: 40),
-                
-                // Connection type text
-                const Text(
-                  'Je me connecte en tant que',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF351F16),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                
-                const SizedBox(height: 30),
-                
-                // User type selection
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildUserTypeButton(
-                      icon: Icons.school,
-                      label: 'Vigile',
-                      isSelected: controller.selectedUserType.value == 'vigile',
-                      onTap: () => controller.setUserType('vigile'),
-                    ),
-                    _buildUserTypeButton(
-                      icon: Icons.person,
-                      label: 'Étudiant',
-                      isSelected: controller.selectedUserType.value == 'etudiant',
-                      onTap: () => controller.setUserType('etudiant'),
-                    ),
-                  ],
-                ),
-                
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
                 
                 // Login form container
                 Container(
@@ -83,6 +45,28 @@ class LoginView extends GetView<LoginController> {
                   ),
                   child: Column(
                     children: [
+                      // Welcome text
+                      const Text(
+                        'Bienvenue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 8),
+                      
+                      const Text(
+                        'Connectez-vous à votre compte',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 30),
+                      
                       // Email field
                       _buildTextField(
                         controller: controller.emailController,
@@ -125,9 +109,7 @@ class LoginView extends GetView<LoginController> {
                           )),
                           const Spacer(),
                           TextButton(
-                            onPressed: () {
-                              // Handle forgot password
-                            },
+                            onPressed: controller.handleForgotPassword,
                             child: const Text(
                               'Mot de Passe Oublié?',
                               style: TextStyle(
@@ -181,63 +163,6 @@ class LoginView extends GetView<LoginController> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserTypeButton({
-    required IconData icon,
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 100,
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFF58613) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? const Color(0xFFF58613) : const Color(0xFF351F16).withOpacity(0.2),
-            width: 2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.white : const Color(0xFFF58613).withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: isSelected ? const Color(0xFFF58613) : const Color(0xFF351F16),
-                size: 20,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isSelected ? Colors.white : const Color(0xFF351F16),
-              ),
-            ),
-          ],
         ),
       ),
     );

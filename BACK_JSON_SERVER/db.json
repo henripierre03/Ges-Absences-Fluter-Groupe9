@@ -1,4 +1,14 @@
 {
+  "vigiles": [
+    {
+      "_id": "1",
+      "nom": "Ba",
+      "prenom": "Awa",
+      "email": "testv",
+      "password": "passer",
+      "role":"vigile"
+    }
+  ],
   "etudiants": [
     {
       "_id": "1",
@@ -63,6 +73,13 @@
       "date": "2025-05-20T08:00:00.000Z",
       "justificatif": "Certificat médical",
       "validation": true
+    },
+    {
+      "id": "2",
+      "etudiantId": "1",
+      "date": "2025-05-31T08:43:49.049843",
+      "justificatif": "birane",
+      "validation": false
     }
   ],
   "cours": [
@@ -142,7 +159,7 @@
       "_id": "11",
       "nom": "Ba",
       "prenom": "Awa",
-      "email": "awa.ba@example.com",
+      "email": "testv",
       "password": "passer",
       "role": "vigile"
     },

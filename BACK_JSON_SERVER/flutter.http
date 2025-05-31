@@ -22,3 +22,14 @@ Content-Type: application/json
   
 }
 ###
+
+PUT http://localhost:3000/absences
+Content-Type: application/json
+
+{
+  "id": "1",
+  "etudiantId": "1",
+  "date": "2025-05-20T08:00:00.000Z",
+  "justificatif": "Maladie",
+  "validation": false
+}

@@ -1,5 +1,5 @@
 class JustificationResponseDto {
-  final String id;
+  final String? id;
   final DateTime date;
   final String justificatif;
   final bool validation;
