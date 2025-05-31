@@ -10,7 +10,7 @@ abstract class Routes {
 }
 
 abstract class _Paths {
-  Paths.();
+  _Paths._();
   static const HOME = '/home';
   static const ETUDIANT = '/etudiant';
   static const LOGIN = '/login';

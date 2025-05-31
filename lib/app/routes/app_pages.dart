@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
-import '../modules/etudiant/views/etudiant_justifiaction_view.dart';
 import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -26,11 +25,7 @@ class AppPages {
       page: () => const EtudiantView(),
       binding: etudiantBinding,
     ),
-    GetPage(
-      name: Routes.ETUDIANT_JUSTIFICATION,
-      page: () => const EtudiantJustificationView(),
-      binding: etudiantBinding,
-    ),
+   
     GetPage(
       name: _Paths.LOGIN,
       page: () => const LoginView(),

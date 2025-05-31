@@ -4,7 +4,6 @@ import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import '../controllers/home_controller.dart';
-import '../../etudiant/views/etudiant_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
