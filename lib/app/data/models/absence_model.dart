@@ -1,41 +1,39 @@
-import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
-
 class Absence {
-  final String? id;
+  final String id;
   final String etudiantId;
-  final DateTime date;
-  final TypeAbsence absence;
-  final String justificationId;
+  final String date;
+  final String absence;
+  final String? justificationId; // This field can be null
   final String coursId;
 
   Absence({
-    this.id,
+    required this.id,
     required this.etudiantId,
     required this.date,
     required this.absence,
-    required this.justificationId,
+    this.justificationId, // Marked as nullable
     required this.coursId,
   });
 
   factory Absence.fromJson(Map<String, dynamic> json) {
     return Absence(
-      id: json['_id'],
-      etudiantId: json['etudiantId'],
-      date: DateTime.parse(json['date']),
-      absence: TypeAbsence.values.firstWhere(
-        (e) => e.toString().split('.').last == json['absence'],
-      ),
-      justificationId: json['justificationId'],
-      coursId: json['coursId'],
+      id: json['_id']?.toString() ?? '', // Ensure it's not null
+      etudiantId: json['etudiantId']?.toString() ?? '',
+      date: json['date']?.toString() ?? '',
+      absence: json['absence']?.toString() ?? '',
+      justificationId: json['justificationId']?.toString(), // Can be null
+      coursId: json['coursId']?.toString() ?? '',
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    '_id': id,
-    'etudiantId': etudiantId,
-    'date': date.toIso8601String(),
-    'absence': absence.toString().split('.').last,
-    'justificationId': justificationId,
-    'coursId': coursId,
-  };
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'etudiantId': etudiantId,
+      'date': date,
+      'absence': absence,
+      'justificationId': justificationId, // Can be null
+      'coursId': coursId,
+    };
+  }
 }
+  
