@@ -1,17 +1,19 @@
-import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_historique_view.dart';
-import 'package:frontend_gesabsence/app/modules/layout/bindings/main_binding.dart';
-import 'package:frontend_gesabsence/app/modules/layout/views/main_view.dart';
-import 'package:frontend_gesabsence/app/modules/parametres/bindings/parametres_binding.dart';
-import 'package:frontend_gesabsence/app/modules/parametres/views/parametres_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
+import '../modules/etudiant/views/etudiant_historique_view.dart';
 import '../modules/etudiant/views/etudiant_justifiaction_view.dart';
 import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/layout/bindings/main_binding.dart';
+import '../modules/layout/views/main_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/parametres/bindings/parametres_binding.dart';
+import '../modules/parametres/views/parametres_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 import '../modules/vigile/bindings/vigile_binding.dart';
 import '../modules/vigile/views/vigile_view.dart';
 
@@ -20,7 +22,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN; // Change initial route to login
+  static const INITIAL = Routes.LOGIN;
   static final etudiantBinding = EtudiantBinding();
   static final routes = [
     GetPage(
@@ -59,10 +61,14 @@ class AppPages {
       binding: VigileBinding(),
     ),
     GetPage(
-  name: _Paths.ETUDIANT_HISTORIQUE,
-  page: () => const EtudiantHistoriqueView(),
-  binding: EtudiantBinding(), // Use the binding here
-),
-
+      name: _Paths.ETUDIANT_HISTORIQUE,
+      page: () => const EtudiantHistoriqueView(),
+      binding: EtudiantBinding(), // Use the binding here
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
+    ),
   ];
 }

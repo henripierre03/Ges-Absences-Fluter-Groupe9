@@ -11,6 +11,7 @@ abstract class Routes {
   static const PARAMETRES = _Paths.PARAMETRES;
   static const VIGILE = _Paths.VIGILE;
   static const ETUDIANT_HISTORIQUE = '/etudiant/historique';
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -22,4 +23,5 @@ abstract class _Paths {
   static const PARAMETRES = '/parametres';
   static const VIGILE = '/vigile';
   static const ETUDIANT_HISTORIQUE = '/etudiant/historique';
+  static const SPLASH = '/splash';
 }

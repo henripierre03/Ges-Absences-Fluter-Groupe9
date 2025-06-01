@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_historique_view.dart';
-import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_view.dart';
 import 'package:frontend_gesabsence/app/modules/layout/controllers/main_controller.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';

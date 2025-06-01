@@ -15,26 +15,46 @@ class LoginView extends GetView<LoginController> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 90),
 
-                // Header
-                const Text(
-                  'Connexion',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF351F16),
+                // Logo
+                Container(
+                  height: 250,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      'assets/images/logo.jpg', 
+                      height:80,
+                      width: 80,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.school,
+                          size: 40,
+                          // color: Color(0xFFF58613),
+                        );
+                      },
+                    ),
                   ),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 30),
+
+                
+
+                const SizedBox(height: 40),
 
                 // Login form container
                 Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: const Color(0xFF351F16),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -45,25 +65,6 @@ class LoginView extends GetView<LoginController> {
                   ),
                   child: Column(
                     children: [
-                      // Welcome text
-                      const Text(
-                        'Bienvenue',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      const SizedBox(height: 8),
-
-                      const Text(
-                        'Connectez-vous à votre compte',
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                      ),
-
-                      const SizedBox(height: 30),
-
                       // Email field
                       _buildTextField(
                         controller: controller.emailController,
@@ -81,9 +82,49 @@ class LoginView extends GetView<LoginController> {
                         isPassword: true,
                       ),
 
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
 
                       // Remember me and forgot password row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Obx(
+                                () => Checkbox(
+                                  value: controller.rememberMe.value,
+                                  onChanged: (value) =>
+                                      controller.toggleRememberMe(),
+                                  activeColor: const Color(0xFFF58613),
+                                  checkColor: Colors.white,
+                                  side: const BorderSide(color: Colors.white70),
+                                ),
+                              ),
+                              const Text(
+                                'Se Souvenir',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Handle forgot password
+                            },
+                            child: const Text(
+                              'Mot de Passe Oublié ?',
+                              style: TextStyle(
+                                color: Color(0xFFF58613),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 24),
 
                       // Login button
@@ -130,6 +171,8 @@ class LoginView extends GetView<LoginController> {
                     ],
                   ),
                 ),
+
+                const SizedBox(height: 40),
               ],
             ),
           ),

@@ -1,4 +1,3 @@
-
 import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
 import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
@@ -21,13 +20,34 @@ class EtudiantController extends GetxController {
   void onInit() {
     super.onInit();
     final arguments = Get.arguments;
+    
     if (arguments != null && arguments is Map) {
       final etudiantId = arguments['etudiantId'];
-      fetchEtudiantData(etudiantId);
-    }else if (arguments != null && arguments is int) {
+      
+      // Check if etudiantId is not null and is an int (or can be converted to int)
+      if (etudiantId != null) {
+        int? parsedId;
+        
+        // Handle different types that might be passed
+        if (etudiantId is int) {
+          parsedId = etudiantId;
+        } else if (etudiantId is String) {
+          parsedId = int.tryParse(etudiantId);
+        }
+        
+        if (parsedId != null) {
+          fetchEtudiantData(parsedId);
+        } else {
+          Get.snackbar('Error', 'Invalid student ID format');
+        }
+      } else {
+        Get.snackbar('Error', 'Student ID is missing');
+      }
+    } else if (arguments != null && arguments is int) {
       fetchEtudiants();
     } else {
-      Get.snackbar('Error', 'No student ID provided');
+      // Handle the case where no valid arguments are provided
+      Get.snackbar('Error', 'No valid arguments provided');
     }
   }
 

@@ -4,7 +4,15 @@
       "id": 1,
       "nom": "Ba",
       "prenom": "Awa",
-      "email": "testv",
+      "email": "awaba",
+      "password": "passer",
+      "role": "vigile"
+    },
+    {
+      "id": 2,
+      "nom": "Sow",
+      "prenom": "Alioune",
+      "email": "alioune",
       "password": "passer",
       "role": "vigile"
     }
@@ -14,7 +22,7 @@
       "id": 1,
       "nom": "Sow",
       "prenom": "Alioune",
-      "email": "test",
+      "email": "aliounesow@gmail.com",
       "password": "passer",
       "role": "etudiant",
       "matricule": "ETU003",
@@ -38,7 +46,7 @@
       "id": 3,
       "nom": "Diallo",
       "prenom": "Fatou",
-      "email": "fatou.diallo@example.com",
+      "email": "fatoudiallo@gmail.com",
       "password": "passer",
       "role": "etudiant",
       "matricule": "ETU003",
