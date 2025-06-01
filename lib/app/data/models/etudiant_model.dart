@@ -7,7 +7,7 @@ import 'package:frontend_gesabsence/app/data/models/user_model.dart';
 class Etudiant extends User {
   final String matricule;
   final Niveau niveau;
-  final String classeId;
+  final int classeId;
   final List<AnneeScolaire> anneesScolaires = [];
   final List<Absence> absences = [];
   final String qrCode;
@@ -27,7 +27,7 @@ class Etudiant extends User {
 
   factory Etudiant.fromJson(Map<String, dynamic> json) {
     return Etudiant(
-      id: json['_id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
@@ -37,7 +37,7 @@ class Etudiant extends User {
       ),
       matricule: json['matricule'],
       niveau: NiveauExtension.fromString(json['niveau']),
-      classeId: json['classeId'],
+      classeId: int.parse(json['classeId']?.toString() ?? '0'),
       qrCode: json['qrCode'],
     );
   }
@@ -45,7 +45,7 @@ class Etudiant extends User {
   @override
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'nom': nom,
       'prenom': prenom,
       'email': email,

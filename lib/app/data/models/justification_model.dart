@@ -1,6 +1,6 @@
 class Justification {
-  final String id;
-  final String etudiantId;
+  final int id;
+  final int etudiantId;
   final DateTime date;
   final String justificatif;
   final bool validation;
@@ -15,8 +15,8 @@ class Justification {
 
   factory Justification.fromJson(Map<String, dynamic> json) {
     return Justification(
-      id: json['_id'],
-      etudiantId: json['etudiantId'],
+      id: int.parse(json['id']?.toString() ?? '0'),
+      etudiantId: int.parse(json['etudiantId']?.toString() ?? '0'),
       date: DateTime.parse(json['date']),
       justificatif: json['justificatif'],
       validation: json['validation'],
@@ -24,7 +24,7 @@ class Justification {
   }
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
+    'id': id,
     'etudiantId': etudiantId,
     'date': date.toIso8601String(),
     'justificatif': justificatif,

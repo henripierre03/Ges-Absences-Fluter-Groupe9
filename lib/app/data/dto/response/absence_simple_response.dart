@@ -1,7 +1,7 @@
 import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
 
 class AbsenceSimpleResponseDto {
-  final String id;
+  final int id;
   final DateTime date;
   final TypeAbsence absence;
 
@@ -13,7 +13,7 @@ class AbsenceSimpleResponseDto {
 
   factory AbsenceSimpleResponseDto.fromJson(Map<String, dynamic> json) {
     return AbsenceSimpleResponseDto(
-      id: json['id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       date: DateTime.parse(json['date']),
       absence: TypeAbsence.values.firstWhere(
         (e) => e.toString().split('.').last == json['absence'],

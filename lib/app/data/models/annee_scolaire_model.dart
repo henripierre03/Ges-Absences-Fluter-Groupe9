@@ -1,11 +1,11 @@
 class AnneeScolaire {
-  String id;
+  int id;
   String annee;
 
   AnneeScolaire({required this.id, required this.annee});
   factory AnneeScolaire.fromJson(Map<String, dynamic> json) {
     return AnneeScolaire(
-      id: json['id'] as String,
+      id: int.parse(json['id']?.toString() ?? '0'),
       annee: json['annee'] as String,
     );
   }

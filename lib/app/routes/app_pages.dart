@@ -1,3 +1,8 @@
+import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_historique_view.dart';
+import 'package:frontend_gesabsence/app/modules/layout/bindings/main_binding.dart';
+import 'package:frontend_gesabsence/app/modules/layout/views/main_view.dart';
+import 'package:frontend_gesabsence/app/modules/parametres/bindings/parametres_binding.dart';
+import 'package:frontend_gesabsence/app/modules/parametres/views/parametres_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -39,9 +44,25 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage(
+      name: _Paths.MAIN,
+      page: () => MainView(),
+      binding: MainBinding(),
+    ),
+    GetPage(
+      name: _Paths.PARAMETRES,
+      page: () => const ParametresView(),
+      binding: ParametresBinding(),
+    ),
+    GetPage(
       name: _Paths.VIGILE,
       page: () => const VigileView(),
       binding: VigileBinding(),
     ),
+    GetPage(
+  name: _Paths.ETUDIANT_HISTORIQUE,
+  page: () => const EtudiantHistoriqueView(),
+  binding: EtudiantBinding(), // Use the binding here
+),
+
   ];
 }

@@ -1,10 +1,11 @@
+
 class Absence {
-  final String id;
-  final String etudiantId;
+  final int id;
+  final int etudiantId;
   final String date;
   final String absence;
-  final String? justificationId; // This field can be null
-  final String coursId;
+  final int? justificationId; // This field can be null
+  final int coursId;
 
   Absence({
     required this.id,
@@ -17,17 +18,20 @@ class Absence {
 
   factory Absence.fromJson(Map<String, dynamic> json) {
     return Absence(
-      id: json['_id']?.toString() ?? '', // Ensure it's not null
-      etudiantId: json['etudiantId']?.toString() ?? '',
-      date: json['date']?.toString() ?? '',
-      absence: json['absence']?.toString() ?? '',
-      justificationId: json['justificationId']?.toString(), // Can be null
-      coursId: json['coursId']?.toString() ?? '',
+      id: int.parse(json['id'].toString()),
+      etudiantId: int.parse(json['etudiantId'].toString()),
+      date: json['date'].toString(),
+      absence: json['absence'].toString(),
+      justificationId: json['justificationId'] != null
+          ? int.parse(json['justificationId'].toString())
+          : null, // Handle nullable justificationId
+      coursId: int.parse(json['coursId'].toString()),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'etudiantId': etudiantId,
       'date': date,
       'absence': absence,
@@ -36,4 +40,5 @@ class Absence {
     };
   }
 }
+
   

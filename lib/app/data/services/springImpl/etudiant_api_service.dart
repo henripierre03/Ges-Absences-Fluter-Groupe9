@@ -34,7 +34,7 @@ class EtudiantApiService implements IEtudiantApiService {
   }
 
   @override
-  Future<List<Absence>> getAbsencesByEtudiantId(String etudiantId) {
+  Future<List<Absence>> getAbsencesByEtudiantId(int etudiantId) {
     // TODO: implement getAbsencesByEtudiantId
     throw UnimplementedError();
   }
@@ -54,8 +54,14 @@ class EtudiantApiService implements IEtudiantApiService {
   }
   
   @override
-  Future<Etudiant> getEtudiantById(String id) {
+  Future<Etudiant> getEtudiantById(int id) {
     // TODO: implement getEtudiantById
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<Etudiant>> getEtudiantByMatricule(String matricule) {
+    // TODO: implement getEtudiantByMatricule
     throw UnimplementedError();
   }
   

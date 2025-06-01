@@ -1,11 +1,11 @@
 import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
 
 class AbsenceAndJustificationResponseDto {
-  final String id;
-  final String etudiantId;
+  final int id;
+  final int etudiantId;
   final DateTime date;
   final TypeAbsence absence;
-  final String? justificationId;
+  final int? justificationId;
 
   AbsenceAndJustificationResponseDto({
     required this.id,
@@ -19,13 +19,15 @@ class AbsenceAndJustificationResponseDto {
     Map<String, dynamic> json,
   ) {
     return AbsenceAndJustificationResponseDto(
-      id: json['id'],
-      etudiantId: json['etudiantId'],
+      id: int.parse(json['id'] ?? 0),
+      etudiantId: int.parse(json['etudiantId'] ?? 0),
       date: DateTime.parse(json['date']),
       absence: TypeAbsence.values.firstWhere(
         (e) => e.toString().split('.').last == json['absence'],
       ),
-      justificationId: json['justificationId'],
+      justificationId: json['justificationId'] != null
+          ? int.parse(json['justificationId'].toString())
+          : null,
     );
   }
 

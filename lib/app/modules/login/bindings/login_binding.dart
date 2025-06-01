@@ -14,5 +14,6 @@ class LoginBinding extends Bindings {
       () => LoginApiServiceImplJson(),
     );
     Get.lazyPut<ILoginApiService>(() => LoginApiServiceImplJson());
+    
   }
 }

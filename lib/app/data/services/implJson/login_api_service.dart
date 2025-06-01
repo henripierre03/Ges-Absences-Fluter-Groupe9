@@ -15,95 +15,47 @@ class LoginApiServiceImplJson extends BaseApiService
 
   @override
   Future<Map<String, dynamic>> login(String email, String password) async {
-    try {
-      // First, try to find the user as an etudiant
-      final etudiants = await getAllEtudiants();
-      final etudiant = etudiants.where(
-        (e) => e.email == email && e.password == password,
-      ).firstOrNull;
-
-      if (etudiant != null) {
-        return {
-          'userType': 'etudiant',
-          'user': etudiant,
-        };
-      }
-
-      // If not found as etudiant, try vigile
-      print('Fetching vigiles...');
-      final vigiles = await getAllVigiles();
-      print('Found ${vigiles.length} vigiles');
-      final vigile = vigiles.where(
-        (v) => v.email == email && v.password == password,
-      ).firstOrNull;
-
-      if (vigile != null) {
-        print('✅User found as vigile: ${vigile.nom}');
-        return {
-          'userType': 'vigile',
-          'user': vigile,
-        };
-      }
-
-      // If no user found with these credentials
-      throw Exception('Email ou mot de passe incorrect');
-    } catch (e) {
-      if (e.toString().contains('Email ou mot de passe incorrect')) {
-        rethrow;
-      }
-      throw Exception('Erreur de connexion: ${e.toString()}');
-    }
-  }
-
-  @override
-  Future<List<Etudiant>> getAllEtudiants() async {
     final client = http.Client();
     try {
-      final response = await client
-          .get(Uri.parse('$baseUrl/etudiants'))
+      // Vérifie l'étudiant
+      final etudiantResponse = await client
+          .get(
+            Uri.parse('$baseUrl/etudiants?email=$email&password=$password'),
+            headers: {'Content-Type': 'application/json'},
+          )
           .timeout(const Duration(seconds: 10));
 
-      if (response.statusCode == 200) {
-        List<dynamic> body = json.decode(response.body);
-        return body.map((item) => Etudiant.fromJson(item)).toList();
-      } else {
-        throw Exception(
-          'Failed to load students: Server returned status code ${response.statusCode}',
-        );
+      if (etudiantResponse.statusCode == 200) {
+        final List<dynamic> etudiants = json.decode(etudiantResponse.body);
+        if (etudiants.isNotEmpty) {
+          final etudiant = Etudiant.fromJson(etudiants.first);
+          return {'userType': 'etudiant', 'user': etudiant};
+        }
       }
-    } on TimeoutException catch (_) {
-      throw Exception('Connection timed out. Please try again later.');
-    } on SocketException catch (_) {
-      throw Exception('Network error: Unable to connect to the server.');
-    } catch (e) {
-      throw Exception('An error occurred: $e');
-    } finally {
-      client.close();
-    }
-  }
 
-  @override
-  Future<List<Vigile>> getAllVigiles() async {
-    final client = http.Client();
-    try {
-      final response = await client
-          .get(Uri.parse('$baseUrl/vigiles'))
+      // Sinon, vérifie vigile
+      final vigileResponse = await client
+          .get(
+            Uri.parse('$baseUrl/vigiles?email=$email&password=$password'),
+            headers: {'Content-Type': 'application/json'},
+          )
           .timeout(const Duration(seconds: 10));
 
-      if (response.statusCode == 200) {
-        List<dynamic> body = json.decode(response.body);
-        return body.map((item) => Vigile.fromJson(item)).toList();
-      } else {
-        throw Exception(
-          'Failed to load vigiles: Server returned status code ${response.statusCode}',
-        );
+      if (vigileResponse.statusCode == 200) {
+        final List<dynamic> vigiles = json.decode(vigileResponse.body);
+        if (vigiles.isNotEmpty) {
+          final vigile = Vigile.fromJson(vigiles.first);
+          return {'userType': 'vigile', 'user': vigile};
+        }
       }
+
+      throw Exception('Aucun utilisateur trouvé avec ces identifiants.');
     } on TimeoutException catch (_) {
-      throw Exception('Connection timed out. Please try again later.');
+      throw Exception('Délai de connexion dépassé. Veuillez réessayer.');
     } on SocketException catch (_) {
-      throw Exception('Network error: Unable to connect to the server.');
+      throw Exception('Erreur réseau : impossible de se connecter au serveur.');
     } catch (e) {
-      throw Exception('An error occurred: $e');
+      throw Exception('Erreur lors de la connexion : $e');
     } finally {
       client.close();
     }

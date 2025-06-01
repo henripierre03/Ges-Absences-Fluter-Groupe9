@@ -14,9 +14,7 @@ class LoginController extends GetxController {
   
   // Loading states
   final isLoading = false.obs;
-  
-  // UI state management
-  final rememberMe = false.obs;
+ 
 
   @override
   void onClose() {
@@ -26,18 +24,7 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  /// Toggle remember me preference
-  void setRememberMe(bool value) {
-    rememberMe.value = value;
-    
-    if (value) {
-      print('Remember me enabled');
-      // TODO: Implement secure storage for credentials
-    } else {
-      print('Remember me disabled');
-      // TODO: Clear stored credentials
-    }
-  }
+ 
 
   /// Validate form inputs
   bool _validateInputs() {
@@ -90,11 +77,6 @@ class LoginController extends GetxController {
         passwordController.text.trim(),
       );
 
-      // Handle remember me functionality
-      if (rememberMe.value) {
-        await _saveCredentials();
-      }
-
       // Navigate based on user type
       if (loginResult['userType'] == 'etudiant') {
         final etudiant = loginResult['user'] as Etudiant;
@@ -121,7 +103,7 @@ class LoginController extends GetxController {
         );
 
         // Navigate to vigile dashboard
-        Get.toNamed(Routes.VIGILE, arguments: {'vigileId': vigile.id});
+        Get.toNamed(Routes.MAIN, arguments: {'initialIndex': 1});
       }
     } catch (e) {
       print('Login failed: $e');
@@ -138,39 +120,10 @@ class LoginController extends GetxController {
   }
 
   /// Save credentials for remember me functionality
-  Future<void> _saveCredentials() async {
-    // TODO: Implement secure storage
-    // You might want to use packages like:
-    // - flutter_secure_storage
-    // - shared_preferences (for non-sensitive data)
-    print('Saving credentials for remember me...');
-  }
-
-  /// Load saved credentials
-  Future<void> _loadSavedCredentials() async {
-    // TODO: Implement loading saved credentials
-    print('Loading saved credentials...');
-  }
 
   /// Clear form data
   void clearForm() {
     emailController.clear();
     passwordController.clear();
-    rememberMe.value = false;
-  }
-
-  /// Handle forgot password
-  void handleForgotPassword() {
-    // TODO: Implement forgot password functionality
-    Get.snackbar(
-      'Mot de Passe Oublié', 
-      'Cette fonctionnalité sera bientôt disponible',
-      backgroundColor: const Color(0xFFF58613).withOpacity(0.8),
-      colorText: const Color(0xFFFFFFFF),
-      duration: const Duration(seconds: 3),
-    );
-    
-    // You might want to navigate to a forgot password screen
-    // Get.toNamed(Routes.FORGOT_PASSWORD);
   }
 }

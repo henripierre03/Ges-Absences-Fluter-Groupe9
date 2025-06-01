@@ -1,7 +1,7 @@
 import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
 
 class EtudiantAllResponseDto {
-  final String id;
+  final int id;
   final String nom;
   final String prenom;
   final UserRole role;
@@ -15,7 +15,7 @@ class EtudiantAllResponseDto {
 
   factory EtudiantAllResponseDto.fromJson(Map<String, dynamic> json) {
     return EtudiantAllResponseDto(
-      id: json['id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       nom: json['nom'],
       prenom: json['prenom'],
       role: UserRole.values.firstWhere(

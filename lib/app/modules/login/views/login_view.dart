@@ -16,7 +16,7 @@ class LoginView extends GetView<LoginController> {
             child: Column(
               children: [
                 const SizedBox(height: 80),
-                
+
                 // Header
                 const Text(
                   'Connexion',
@@ -26,9 +26,9 @@ class LoginView extends GetView<LoginController> {
                     color: Color(0xFF351F16),
                   ),
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Login form container
                 Container(
                   padding: const EdgeInsets.all(24),
@@ -54,28 +54,25 @@ class LoginView extends GetView<LoginController> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      
+
                       const SizedBox(height: 8),
-                      
+
                       const Text(
                         'Connectez-vous à votre compte',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
-                      
+
                       const SizedBox(height: 30),
-                      
+
                       // Email field
                       _buildTextField(
                         controller: controller.emailController,
                         label: 'E-mail',
                         icon: Icons.email_outlined,
                       ),
-                      
+
                       const SizedBox(height: 20),
-                      
+
                       // Password field
                       _buildTextField(
                         controller: controller.passwordController,
@@ -83,79 +80,52 @@ class LoginView extends GetView<LoginController> {
                         icon: Icons.lock_outline,
                         isPassword: true,
                       ),
-                      
+
                       const SizedBox(height: 12),
-                      
+
                       // Remember me and forgot password row
-                      Row(
-                        children: [
-                          Obx(() => Row(
-                            children: [
-                              Checkbox(
-                                value: controller.rememberMe.value,
-                                onChanged: (value) => controller.setRememberMe(value ?? false),
-                                activeColor: const Color(0xFFF58613),
-                                checkColor: Colors.white,
-                                side: const BorderSide(color: Colors.white54),
-                              ),
-                              const Text(
-                                'Se Souvenir',
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          )),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: controller.handleForgotPassword,
-                            child: const Text(
-                              'Mot de Passe Oublié?',
-                              style: TextStyle(
-                                color: Color(0xFFF58613),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
                       const SizedBox(height: 24),
-                      
+
                       // Login button
                       SizedBox(
                         width: double.infinity,
                         height: 50,
-                        child: Obx(() => ElevatedButton(
-                          onPressed: controller.isLoading.value ? null : controller.login,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF58613),
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
+                        child: Obx(
+                          () => ElevatedButton(
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : controller.login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFF58613),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              disabledBackgroundColor: const Color(
+                                0xFFF58613,
+                              ).withOpacity(0.6),
                             ),
-                            disabledBackgroundColor: const Color(0xFFF58613).withOpacity(0.6),
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : const Text(
+                                    'Se Connecter',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
-                          child: controller.isLoading.value
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                  ),
-                                )
-                              : const Text(
-                                  'Se Connecter',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                        )),
+                        ),
                       ),
                     ],
                   ),
@@ -180,28 +150,15 @@ class LoginView extends GetView<LoginController> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(
-          color: Colors.white70,
-          fontSize: 14,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: Colors.white70,
-          size: 20,
-        ),
+        labelStyle: const TextStyle(color: Colors.white70, fontSize: 14),
+        prefixIcon: Icon(icon, color: Colors.white70, size: 20),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Colors.white24,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: Colors.white24, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Color(0xFFF58613),
-            width: 2,
-          ),
+          borderSide: const BorderSide(color: Color(0xFFF58613), width: 2),
         ),
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),

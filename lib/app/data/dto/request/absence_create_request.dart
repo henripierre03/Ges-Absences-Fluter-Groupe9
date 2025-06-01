@@ -1,11 +1,11 @@
 import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
 
 class AbsenceCreateRequestDto {
-  final String etudiantId;
+  final int etudiantId;
   final DateTime date;
   final TypeAbsence typeAbsence;
-  final String justificationId;
-  final String courId;
+  final int justificationId;
+  final int courId;
 
   AbsenceCreateRequestDto({
     required this.etudiantId,

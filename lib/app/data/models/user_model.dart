@@ -1,7 +1,7 @@
 import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
 
 class User {
-  final String id;
+  final int id;
   final String nom;
   final String prenom;
   final String email;
@@ -19,7 +19,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['_id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
@@ -31,7 +31,7 @@ class User {
   }
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
+    'id': id,
     'nom': nom,
     'prenom': prenom,
     'email': email,

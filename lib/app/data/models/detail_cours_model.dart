@@ -1,10 +1,10 @@
 class DetailCours {
-  final String id;
+  final int id;
   final DateTime date;
   final DateTime heureDebut;
   final DateTime heureFin;
-  final String coursId;
-  final String classeId;
+  final int coursId;
+  final int classeId;
 
   DetailCours({
     required this.id,
@@ -16,17 +16,17 @@ class DetailCours {
   });
   factory DetailCours.fromJson(Map<String, dynamic> json) {
     return DetailCours(
-      id: json['_id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       date: DateTime.parse(json['date']),
       heureDebut: DateTime.parse(json['heureDebut']),
       heureFin: DateTime.parse(json['heureFin']),
-      coursId: json['coursId'],
-      classeId: json['classeId'],
+      coursId: int.parse(json['coursId']?.toString() ?? '0'),
+      classeId: int.parse(json['classeId']?.toString() ?? '0'),
     );
   }
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'date': date.toIso8601String(),
       'heureDebut': heureDebut.toIso8601String(),
       'heureFin': heureFin.toIso8601String(),

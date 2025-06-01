@@ -24,20 +24,26 @@ class JustificationApiService implements IJustificationApiService {
   }
 
   @override
-  Future<List<Justification?>> getJustificationByEtudiantId(String etudiantId) {
+  Future<List<Justification?>> getJustificationByEtudiantId(int etudiantId) {
     // TODO: implement getJustificationByEtudiantId
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updateAbsence(String absenceId, Map<String, dynamic> absenceData) {
+  Future<void> updateAbsence(int absenceId, Map<String, dynamic> absenceData) {
     // TODO: implement updateAbsence
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updateJustification(String justificationId, Map<String, dynamic> data) {
+  Future<void> updateJustification(int justificationId, Map<String, dynamic> data) {
     // TODO: implement updateJustification
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Absence?> getAbsenceById(int absenceId) {
+    // TODO: implement getAbsenceById
     throw UnimplementedError();
   }
 }

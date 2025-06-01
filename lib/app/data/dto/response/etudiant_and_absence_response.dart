@@ -2,7 +2,7 @@ import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
 import 'package:frontend_gesabsence/app/data/dto/response/absence_simple_response.dart';
 
 class EtudiantAndAbsenceResponseDto {
-  final String id;
+  final int id;
   final String nom;
   final String prenom;
   final String email;
@@ -22,7 +22,7 @@ class EtudiantAndAbsenceResponseDto {
 
   factory EtudiantAndAbsenceResponseDto.fromJson(Map<String, dynamic> json) {
     return EtudiantAndAbsenceResponseDto(
-      id: json['id'],
+      id: int.parse(json['id']?.toString() ?? '0'),
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
