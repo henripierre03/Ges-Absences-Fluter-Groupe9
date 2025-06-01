@@ -16,7 +16,7 @@ class VigileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    searchController = TextEditingController();
+    searchController = TextEditingController(); 
   }
 
   @override
