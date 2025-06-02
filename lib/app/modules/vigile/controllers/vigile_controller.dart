@@ -19,6 +19,13 @@ class VigileController extends GetxController {
   final RxString errorMessage = ''.obs;
 
   @override
+  void onInit() {
+    super.onInit();
+    print('VigileController initialisé');
+    print('Service API: ${etudiantApiService.runtimeType}');
+  }
+
+  @override
   void onClose() {
     searchController.dispose();
     super.onClose();
@@ -26,7 +33,12 @@ class VigileController extends GetxController {
 
   // Méthode pour rechercher un étudiant par matricule
   Future<void> searchStudentByMatricule(String matricule) async {
+    print('=== DÉBUT searchStudentByMatricule ===');
+    print('Matricule reçu: "$matricule"');
+    print('Service utilisé: ${etudiantApiService.runtimeType}');
+
     if (matricule.trim().isEmpty) {
+      print('Matricule vide');
       _showErrorSnackbar('Veuillez entrer un matricule');
       return;
     }
@@ -36,40 +48,58 @@ class VigileController extends GetxController {
       errorMessage.value = '';
       foundStudent.value = null;
 
-      print('Recherche de l\'étudiant avec matricule: ${matricule.trim()}');
+      print('Recherche de l\'étudiant avec matricule: "${matricule.trim()}"');
+      print('Appel du service API...');
 
       final student = await etudiantApiService.getEtudiantByMatricule(
         matricule.trim(),
       );
 
       print('Étudiant trouvé: ${student.toString()}');
+      print('Validation: ${student.isValid()}');
 
       foundStudent.value = student;
-
       _showSuccessSnackbar('Étudiant trouvé: ${student.prenom} ${student.nom}');
-    } catch (e) {
-      print('Erreur lors de la recherche: $e');
+    } catch (e, stackTrace) {
+      print('=== ERREUR CAPTURÉE ===');
+      print('Exception: $e');
+      print('Type: ${e.runtimeType}');
+      print('Stack trace: $stackTrace');
 
-      errorMessage.value = e.toString();
+      // Gestion spécifique des erreurs
+      String errorMsg;
+      if (e is UnimplementedError) {
+        errorMsg = 'Méthode non implémentée: ${e.message}';
+        print('UnimplementedError détecté: ${e.message}');
+      } else if (e.toString().contains('non trouvé')) {
+        errorMsg = 'Aucun étudiant trouvé avec ce matricule';
+      } else if (e.toString().contains('connexion') ||
+          e.toString().contains('réseau') ||
+          e.toString().contains('Impossible de joindre')) {
+        errorMsg = 'Erreur de connexion au serveur';
+      } else {
+        errorMsg = 'Erreur lors de la recherche: ${e.toString()}';
+      }
+
+      errorMessage.value = errorMsg;
       foundStudent.value = null;
-
-      _showErrorSnackbar('Étudiant non trouvé ou erreur de connexion');
+      _showErrorSnackbar(errorMsg);
     } finally {
       isSearching.value = false;
+      print('=== FIN searchStudentByMatricule ===');
     }
   }
 
   // Méthode pour gérer le scan QR
   void handleQRScan(String qrResult) {
     print('QR Code scanné: $qrResult');
-
-    // Supposons que le QR code contient le matricule de l'étudiant
     searchController.text = qrResult;
     searchStudentByMatricule(qrResult);
   }
 
   // Méthode pour effacer la recherche
   void clearSearch() {
+    print('Clearing search...');
     searchController.clear();
     foundStudent.value = null;
     errorMessage.value = '';
@@ -84,16 +114,12 @@ class VigileController extends GetxController {
 
     try {
       isLoading.value = true;
-
-      // Ici vous pouvez implémenter la logique de pointage
-      // En utilisant l'API de pointage si elle existe
+      print('Marquage présence pour: $matricule, vigile: $vigileId');
 
       // Simulation d'un appel API
       await Future.delayed(const Duration(milliseconds: 500));
 
       _showSuccessSnackbar('Présence enregistrée pour l\'étudiant $matricule');
-
-      // Optionnellement, effacer la recherche après le pointage
       clearSearch();
     } catch (e) {
       print('Erreur lors du pointage: $e');

@@ -16,10 +16,18 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     final url = Uri.parse('$baseUrl/api/mobile/absence/etudiant/$etudiantId');
 
     try {
+      print('Calling: $url');
+
       final response = await http.get(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       );
+
+      print('Status: ${response.statusCode}');
+      print('Response: ${response.body}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -33,6 +41,7 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
         );
       }
     } catch (e) {
+      print('Exception getAbsencesByEtudiantId: $e');
       throw Exception(
         'Erreur réseau lors du chargement des absences: ${e.toString()}',
       );
@@ -44,10 +53,18 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     final url = Uri.parse('$baseUrl/api/mobile/etudiant/id/$id');
 
     try {
+      print('Calling: $url');
+
       final response = await http.get(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       );
+
+      print('Status: ${response.statusCode}');
+      print('Response: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -59,6 +76,7 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
         );
       }
     } catch (e) {
+      print('Exception getEtudiantById: $e');
       throw Exception(
         'Erreur réseau lors de la récupération de l\'étudiant: ${e.toString()}',
       );
@@ -72,36 +90,125 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     final url = Uri.parse('$baseUrl/api/mobile/etudiant/$matricule');
 
     try {
+      print('URL appelée: $url');
+
       final response = await http.get(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      print('Status code: ${response.statusCode}');
+      print('Response headers: ${response.headers}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        if (data.containsKey('result') && data['result'] != null) {
+          final result = data['result'];
+          print('Parsing result: $result');
+          return EtudiantSimpleResponse.fromJson(result);
+        } else if (data.containsKey('data') && data['data'] != null) {
+          final result = data['data'];
+          print('Parsing data: $result');
+          return EtudiantSimpleResponse.fromJson(result);
+        } else {
+          print('Trying direct parse: $data');
+          return EtudiantSimpleResponse.fromJson(data);
+        }
+      } else if (response.statusCode == 404) {
+        throw Exception('Étudiant avec le matricule $matricule non trouvé');
+      } else {
+        throw Exception('Erreur HTTP ${response.statusCode}: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception détaillée getEtudiantByMatricule: $e');
+      print('Exception type: ${e.runtimeType}');
+
+      if (e.toString().contains('non trouvé')) {
+        rethrow;
+      }
+      throw Exception('Erreur de connexion: $e');
+    }
+  }
+
+  // Implémentation des autres méthodes pour éviter UnimplementedError
+  @override
+  Future<Etudiant> getEtudiantByVigileId(
+    PointageRequestDto pointageRequest,
+  ) async {
+    // Implémentation temporaire ou réelle selon vos besoins
+    throw UnimplementedError('Cette méthode n\'est pas encore implémentée');
+  }
+
+  @override
+  Future<List<Etudiant>> getAllEtudiants(User userConnect) async {
+    final url = Uri.parse('$baseUrl/api/mobile/etudiants');
+
+    try {
+      print('Calling: $url');
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final result = data['result'] ?? data['data'];
-        return EtudiantSimpleResponse.fromJson(result);
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final List<dynamic> data =
+            jsonResponse['data'] ?? jsonResponse['result'] ?? [];
+
+        return data.map((e) => Etudiant.fromJson(e)).toList();
       } else {
         throw Exception(
-          'Erreur lors de la récupération de l\'étudiant (code ${response.statusCode})',
+          'Erreur lors du chargement des étudiants (code ${response.statusCode})',
         );
       }
     } catch (e) {
+      print('Exception getAllEtudiants: $e');
       throw Exception(
-        'Erreur réseau lors de la récupération de l\'étudiant: ${e.toString()}',
+        'Erreur réseau lors du chargement des étudiants: ${e.toString()}',
       );
     }
   }
 
-  // Les autres méthodes restent à implémenter selon vos besoins
   @override
-  Future<Etudiant> getEtudiantByVigileId(PointageRequestDto pointageRequest) =>
-      throw UnimplementedError();
+  Future<List<Etudiant>> getEtudiants() async {
+    final url = Uri.parse('$baseUrl/api/mobile/etudiants');
 
-  @override
-  Future<List<Etudiant>> getAllEtudiants(User userConnect) =>
-      throw UnimplementedError();
+    try {
+      print('Calling: $url');
 
-  @override
-  Future<List<Etudiant>> getEtudiants() => throw UnimplementedError();
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final List<dynamic> data =
+            jsonResponse['data'] ?? jsonResponse['result'] ?? [];
+
+        return data.map((e) => Etudiant.fromJson(e)).toList();
+      } else {
+        throw Exception(
+          'Erreur lors du chargement des étudiants (code ${response.statusCode})',
+        );
+      }
+    } catch (e) {
+      print('Exception getEtudiants: $e');
+      throw Exception(
+        'Erreur réseau lors du chargement des étudiants: ${e.toString()}',
+      );
+    }
+  }
 }
