@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justifiaction_view.dart';
 import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 
 import 'package:get/get.dart';

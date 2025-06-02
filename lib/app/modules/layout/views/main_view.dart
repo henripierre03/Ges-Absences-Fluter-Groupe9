@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_historique_view.dart';
 import 'package:frontend_gesabsence/app/modules/layout/controllers/main_controller.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';
@@ -10,7 +9,7 @@ import 'package:get/get.dart';
 class MainView extends GetView<MainController> {
   MainView({super.key});
 
-  final List<Widget> pages = [ParametresView(), VigileView(), EtudiantHistoriqueView()];
+  final List<Widget> pages = [ParametresView(), VigileView(), ParametresView()];
   final List<String> titles = ['Paramètres', 'Accueil', 'Étudiants'];
 
   @override

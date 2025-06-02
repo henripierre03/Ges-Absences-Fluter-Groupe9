@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
-import '../modules/etudiant/views/etudiant_historique_view.dart';
-import '../modules/etudiant/views/etudiant_justifiaction_view.dart';
 import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -22,7 +20,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LOGIN;
+  static const INITIAL = Routes.VIGILE;
   static final etudiantBinding = EtudiantBinding();
   static final routes = [
     GetPage(
@@ -35,11 +33,11 @@ class AppPages {
       page: () => const EtudiantView(),
       binding: etudiantBinding,
     ),
-    GetPage(
-      name: Routes.ETUDIANT_JUSTIFICATION,
-      page: () => const EtudiantJustificationView(),
-      binding: etudiantBinding,
-    ),
+    // GetPage(
+    //   name: Routes.ETUDIANT_JUSTIFICATION,
+    //   page: () => const EtudiantJustificationView(),
+    //   binding: etudiantBinding,
+    // ),
     GetPage(
       name: _Paths.LOGIN,
       page: () => const LoginView(),
@@ -59,11 +57,6 @@ class AppPages {
       name: _Paths.VIGILE,
       page: () => const VigileView(),
       binding: VigileBinding(),
-    ),
-    GetPage(
-      name: _Paths.ETUDIANT_HISTORIQUE,
-      page: () => const EtudiantHistoriqueView(),
-      binding: EtudiantBinding(), // Use the binding here
     ),
     GetPage(
       name: _Paths.SPLASH,

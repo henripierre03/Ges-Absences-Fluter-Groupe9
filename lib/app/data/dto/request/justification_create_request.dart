@@ -1,21 +1,24 @@
 class JustificationCreateRequestDto {
-  final int? id;
-  final int etudiantId;
+  final String id;
+  final String etudiantId;
+  final String absenceId;
   final DateTime date;
   final String justificatif;
   final bool validation;
 
   JustificationCreateRequestDto({
-    this.id,
+    required this.id,
     required this.etudiantId,
+    required this.absenceId,
     required this.date,
     required this.justificatif,
     required this.validation,
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
+    '_id': id,
     'etudiantId': etudiantId,
+    'absenceId': absenceId,
     'date': date.toIso8601String(),
     'justificatif': justificatif,
     'validation': validation,
@@ -23,26 +26,19 @@ class JustificationCreateRequestDto {
 
   factory JustificationCreateRequestDto.fromJson(Map<String, dynamic> json) {
     return JustificationCreateRequestDto(
-      id: json['id'] != null ? int.parse(json['id'].toString()) : null,
-      etudiantId: int.parse(json['etudiantId'].toString()),
+      id: json['_id'],
+      etudiantId: json['etudiantId'],
+      absenceId: json['absenceId'],
       date: DateTime.parse(json['date']),
       justificatif: json['justificatif'],
       validation: json['validation'],
     );
   }
-
-  // Static method to create a new ID
   static int generateNewId(List<JustificationCreateRequestDto> justifications) {
-    if (justifications.isEmpty) {
-      return 1; // Start with ID '1' if there are no justifications
-    }
-
-    // Find the maximum ID currently in use
-    int maxId = justifications
-        .map((j) => j.id ?? 0)
-        .reduce((currentMax, id) => id > currentMax ? id : currentMax);
-
-    // Increment the maximum ID by 1
-    return maxId + 1;
+    if (justifications.isEmpty) return 1;
+    final ids = justifications
+        .map((j) => int.tryParse(j.id.toString()) ?? 0)
+        .toList();
+    return (ids.isEmpty ? 0 : ids.reduce((a, b) => a > b ? a : b)) + 1;
   }
 }

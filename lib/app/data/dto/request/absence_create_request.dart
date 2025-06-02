@@ -1,14 +1,18 @@
 import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
 
 class AbsenceCreateRequestDto {
-  final int etudiantId;
+  final String id;
+  final String etudiantId;
+  final String vigileId;
   final DateTime date;
   final TypeAbsence typeAbsence;
-  final int justificationId;
-  final int courId;
+  final String justificationId;
+  final String courId;
 
   AbsenceCreateRequestDto({
+    required this.id,
     required this.etudiantId,
+    required this.vigileId,
     required this.date,
     required this.typeAbsence,
     required this.justificationId,
@@ -16,7 +20,9 @@ class AbsenceCreateRequestDto {
   });
 
   Map<String, dynamic> toJson() => {
+    '_id': id,
     'etudiantId': etudiantId,
+    'vigileId': vigileId,
     'date': date.toIso8601String(),
     'typeAbsence': typeAbsence.toString().split('.').last,
     'justificationId': justificationId,

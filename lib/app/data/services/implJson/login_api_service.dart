@@ -17,42 +17,49 @@ class LoginApiServiceImplJson extends BaseApiService
   Future<Map<String, dynamic>> login(String email, String password) async {
     final client = http.Client();
     try {
-      // Vérifie l'étudiant
+      // Récupère tous les étudiants
       final etudiantResponse = await client
           .get(
-            Uri.parse('$baseUrl/etudiants?email=$email&password=$password'),
+            Uri.parse('$baseUrl/etudiants'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 10));
 
       if (etudiantResponse.statusCode == 200) {
         final List<dynamic> etudiants = json.decode(etudiantResponse.body);
-        if (etudiants.isNotEmpty) {
-          final etudiant = Etudiant.fromJson(etudiants.first);
-          return {'userType': 'etudiant', 'user': etudiant};
+
+        // Recherche de l'étudiant avec les bonnes credentials
+        for (var etudiantData in etudiants) {
+          if (etudiantData['email'] == email &&
+              etudiantData['password'] == password) {
+            final etudiant = Etudiant.fromJson(etudiantData);
+            return {'userType': 'etudiant', 'user': etudiant};
+          }
         }
       }
 
-      // Sinon, vérifie vigile
+      // Si aucun étudiant trouvé, vérifie les vigiles
       final vigileResponse = await client
           .get(
-            Uri.parse('$baseUrl/vigiles?email=$email&password=$password'),
+            Uri.parse('$baseUrl/vigiles'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 10));
-
       if (vigileResponse.statusCode == 200) {
         final List<dynamic> vigiles = json.decode(vigileResponse.body);
-        if (vigiles.isNotEmpty) {
-          final vigile = Vigile.fromJson(vigiles.first);
-          return {'userType': 'vigile', 'user': vigile};
+
+        for (var vigileData in vigiles) {
+          if (vigileData['email'] == email &&
+              vigileData['password'] == password) {
+            final vigile = Vigile.fromJson(vigileData);
+            return {'userType': 'vigile', 'user': vigile};
+          }
         }
       }
-
-      throw Exception('Aucun utilisateur trouvé avec ces identifiants.');
-    } on TimeoutException catch (_) {
+      throw Exception('Email ou mot de passe incorrect.');
+    } on TimeoutException {
       throw Exception('Délai de connexion dépassé. Veuillez réessayer.');
-    } on SocketException catch (_) {
+    } on SocketException {
       throw Exception('Erreur réseau : impossible de se connecter au serveur.');
     } catch (e) {
       throw Exception('Erreur lors de la connexion : $e');

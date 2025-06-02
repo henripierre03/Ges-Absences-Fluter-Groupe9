@@ -1,9 +1,10 @@
 class ApiConfig {
-  static const bool useMock = true; // Change à false pour Spring
+  static const bool useMock = false; // Change à false pour Spring
 
   static String get baseUrl {
     return useMock
-        ? 'http://10.0.2.2:3000' // JSON Server
-        : 'http://192.168.1.5:8080/api'; // Backend Spring (exemple IP locale)
+        ? 'http://192.168.68.219:3000' // JSON Server
+        // ? 'https://f71e-154-73-174-180.ngrok-free.app/' // JSON Server
+        : 'https://ges-absences.onrender.com'; // Backend Spring (exemple IP locale)
   }
 }

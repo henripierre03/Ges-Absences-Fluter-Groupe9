@@ -13,7 +13,7 @@ class Vigile extends User {
 
   factory Vigile.fromJson(Map<String, dynamic> json) {
     return Vigile(
-      id: int.parse(json['id']?.toString() ?? '0'),
+      id: json['_id'],
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],

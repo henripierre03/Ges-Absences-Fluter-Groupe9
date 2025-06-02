@@ -63,36 +63,12 @@ class LoginController extends GetxController {
       return false;
     }
 
-    // Basic email validation
-    // if (!GetUtils.isEmail(emailController.text.trim())) {
-      Get.snackbar(
-        'Erreur de Validation',
-        'Veuillez entrer une adresse email valide',
-        backgroundColor: const Color(0xFF351F16),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 3),
-      );
-      // return false;
-    // }
-
     return true;
   }
 
-  /// Handle login - automatically detect user type
+  /// Handle login with automatic user type detection
   Future<void> login() async {
     if (!_validateInputs()) return;
-
-    // Validate that a user type is selected
-    if (selectedUserType.value.isEmpty) {
-      Get.snackbar(
-        'Erreur de Validation',
-        'Veuillez sélectionner un type d\'utilisateur',
-        backgroundColor: const Color(0xFF351F16),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 3),
-      );
-      return;
-    }
 
     isLoading.value = true;
 
@@ -102,17 +78,10 @@ class LoginController extends GetxController {
         passwordController.text.trim(),
       );
 
-      // Verify that the logged user type matches the selected type
-      if (loginResult['userType'] != selectedUserType.value) {
-        Get.snackbar(
-          'Erreur de Connexion',
-          'Le type d\'utilisateur ne correspond pas à votre sélection',
-          backgroundColor: const Color(0xFF351F16),
-          colorText: const Color(0xFFFFFFFF),
-          duration: const Duration(seconds: 4),
-        );
-        return;
-      }
+      print('Login result: $loginResult');
+
+      // Mise à jour automatique du type d'utilisateur sélectionné
+      selectedUserType.value = loginResult['userType'];
 
       // Navigate based on user type
       if (loginResult['userType'] == 'etudiant') {
@@ -146,7 +115,7 @@ class LoginController extends GetxController {
       print('Login failed: $e');
       Get.snackbar(
         'Erreur de Connexion',
-        'Connexion échouée: ${e.toString()}',
+        'Email ou mot de passe incorrect',
         backgroundColor: const Color(0xFF351F16),
         colorText: const Color(0xFFFFFFFF),
         duration: const Duration(seconds: 4),

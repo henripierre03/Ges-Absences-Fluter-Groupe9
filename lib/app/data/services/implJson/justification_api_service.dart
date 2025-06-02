@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
@@ -36,8 +35,10 @@ class JustificationApiServiceImplJson extends BaseApiService
         if (responseBody['id'] == null) {
           throw Exception('Server did not return an ID for the justification');
         }
-        print('✅ Justification created successfully with ID: ${responseBody['id']}');
-        print( '✅ Justification details: $responseBody');
+        print(
+          '✅ Justification created successfully with ID: ${responseBody['id']}',
+        );
+        print('✅ Justification details: $responseBody');
         return JustificationCreateRequestDto.fromJson(responseBody);
       } else {
         throw Exception(
@@ -121,7 +122,6 @@ class JustificationApiServiceImplJson extends BaseApiService
     }
   }
 
-  
   @override
   Future<List<Justification?>> getJustificationByEtudiantId(
     int etudiantId,
@@ -144,7 +144,7 @@ class JustificationApiServiceImplJson extends BaseApiService
   }
 
   @override
-  Future<Absence?> getAbsenceById(int absenceId) async {
+  Future<Absence> getAbsenceById(String absenceId) async {
     final response = await http
         .get(
           Uri.parse('$baseUrl/absences/$absenceId'),
@@ -161,5 +161,12 @@ class JustificationApiServiceImplJson extends BaseApiService
     }
   }
 
- 
+  @override
+  Future<Absence> create(
+    String absenceId,
+    JustificationCreateRequestDto request,
+  ) {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
 }

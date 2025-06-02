@@ -23,6 +23,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             icon: Icons.logout,
             isSelected: currentIndex == 0,
             onTap: onTap,
+            isLogout: true, 
           ),
           _NavItem(
             index: 1,
@@ -47,20 +48,20 @@ class _NavItem extends StatelessWidget {
   final IconData icon;
   final bool isSelected;
   final Function(int) onTap;
+  final bool isLogout;
 
   const _NavItem({
     required this.index,
     required this.icon,
     required this.isSelected,
     required this.onTap,
+    this.isLogout = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    IconData displayIcon = icon;
-    if (icon == Icons.logout) {
-      displayIcon = Icons.login;
-    }
+    // Pour l'icône de déconnexion, on garde toujours logout
+    IconData displayIcon = isLogout ? Icons.logout : icon;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -90,7 +91,9 @@ class _NavItem extends StatelessWidget {
               margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isSelected
+                color: isLogout && isSelected
+                    ? const Color(0xFFDC3545)
+                    : isSelected
                     ? const Color(0xFFFF6B00)
                     : const Color(0xFFFF8C00),
               ),

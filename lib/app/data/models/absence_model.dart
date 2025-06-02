@@ -1,44 +1,45 @@
+import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
 
 class Absence {
-  final int id;
-  final int etudiantId;
-  final String date;
-  final String absence;
-  final int? justificationId; // This field can be null
-  final int coursId;
+  final String id;
+  final String etudiantId;
+  final String vigileId;
+  final DateTime date;
+  final TypeAbsence absence;
+  final String justificationId;
+  final String courId;
 
   Absence({
     required this.id,
     required this.etudiantId,
+    required this.vigileId,
     required this.date,
     required this.absence,
-    this.justificationId, // Marked as nullable
-    required this.coursId,
+    required this.justificationId,
+    required this.courId,
   });
 
   factory Absence.fromJson(Map<String, dynamic> json) {
     return Absence(
-      id: int.parse(json['id'].toString()),
-      etudiantId: int.parse(json['etudiantId'].toString()),
-      date: json['date'].toString(),
-      absence: json['absence'].toString(),
-      justificationId: json['justificationId'] != null
-          ? int.parse(json['justificationId'].toString())
-          : null, // Handle nullable justificationId
-      coursId: int.parse(json['coursId'].toString()),
+      id: json['_id'].toString(),
+      etudiantId: json['etudiantId'].toString(),
+      vigileId: json['vigileId'].toString(),
+      date: DateTime.parse(json['date']),
+      absence: TypeAbsence.values[json['absence']],
+      justificationId: json['justificationId'].toString(),
+      courId: json['coursId'].toString(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'etudiantId': etudiantId,
-      'date': date,
-      'absence': absence,
-      'justificationId': justificationId, // Can be null
-      'coursId': coursId,
+      'vigileId': vigileId,
+      'date': date.toIso8601String(),
+      'absence': absence.toString().split('.').last,
+      'justificationId': justificationId,
+      'coursId': courId,
     };
   }
 }
-
-  

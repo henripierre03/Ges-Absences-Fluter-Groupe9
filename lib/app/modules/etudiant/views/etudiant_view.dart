@@ -421,31 +421,22 @@ class EtudiantView extends GetView<EtudiantController> {
   }
 
   Color _getStatusColor(Absence absence) {
-    if (absence.justificationId != null) {
-      return const Color(0xFFF58613); // Orange for justified
-    } else {
-      return const Color(0xFF351F16); // Dark brown for not justified
+    return const Color(0xFFF58613); // Orange for justified
     }
-  }
 
   String _getStatusText(Absence absence) {
-    if (absence.justificationId != null) {
-      return "Justifiée";
-    } else {
-      return "Non justifiée";
+    return "Justifiée";
     }
-  }
 
-  String _formatDate(String date) {
+  String _formatDate(DateTime date) {
     try {
-      final DateTime parsedDate = DateTime.parse(date);
       final List<String> months = [
         'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun',
         'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'
       ];
-      return "${parsedDate.day} ${months[parsedDate.month - 1]} ${parsedDate.year}";
+      return "${date.day} ${months[date.month - 1]} ${date.year}";
     } catch (e) {
-      return date;
+      return date.toString();
     }
   }
 }

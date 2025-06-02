@@ -1,3 +1,4 @@
+import 'package:frontend_gesabsence/app/core/enums/filiere_enum.dart';
 import 'package:frontend_gesabsence/app/core/enums/niveau_enum.dart';
 import 'package:frontend_gesabsence/app/core/enums/role_enum.dart';
 import 'package:frontend_gesabsence/app/data/models/Absence_model.dart';
@@ -6,14 +7,16 @@ import 'package:frontend_gesabsence/app/data/models/user_model.dart';
 
 class Etudiant extends User {
   final String matricule;
+  final FiliereEnum filiere;
   final Niveau niveau;
-  final int classeId;
+  final String classeId;
   final List<AnneeScolaire> anneesScolaires = [];
   final List<Absence> absences = [];
   final String qrCode;
 
   Etudiant({
     required this.matricule,
+    required this.filiere,
     required super.id,
     required super.nom,
     required super.prenom,
@@ -27,7 +30,8 @@ class Etudiant extends User {
 
   factory Etudiant.fromJson(Map<String, dynamic> json) {
     return Etudiant(
-      id: int.parse(json['id']?.toString() ?? '0'),
+      id: json['_id'],
+      filiere: FiliereExtension.fromString(json['filiere']),
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
@@ -37,7 +41,7 @@ class Etudiant extends User {
       ),
       matricule: json['matricule'],
       niveau: NiveauExtension.fromString(json['niveau']),
-      classeId: int.parse(json['classeId']?.toString() ?? '0'),
+      classeId: json['classeId'],
       qrCode: json['qrCode'],
     );
   }
@@ -45,7 +49,7 @@ class Etudiant extends User {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'nom': nom,
       'prenom': prenom,
       'email': email,

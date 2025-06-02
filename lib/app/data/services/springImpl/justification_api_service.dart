@@ -1,5 +1,4 @@
 import 'package:frontend_gesabsence/app/data/dto/request/justification_create_request.dart';
-import 'package:frontend_gesabsence/app/data/dto/response/justification_response.dart';
 import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/models/justification_model.dart';
 import 'package:frontend_gesabsence/app/data/services/i_justification_api_service.dart';
@@ -40,10 +39,20 @@ class JustificationApiService implements IJustificationApiService {
     // TODO: implement updateJustification
     throw UnimplementedError();
   }
+
+
+  
+// ------------------------------------------------------------------------------------------------------------
+  @override
+  Future<Absence> create(String absenceId, JustificationCreateRequestDto request) {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
   
   @override
-  Future<Absence?> getAbsenceById(int absenceId) {
+  Future<Absence> getAbsenceById(String absenceId) {
     // TODO: implement getAbsenceById
     throw UnimplementedError();
   }
+
 }

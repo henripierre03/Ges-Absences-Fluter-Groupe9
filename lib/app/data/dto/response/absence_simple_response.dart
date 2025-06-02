@@ -4,11 +4,13 @@ class AbsenceSimpleResponseDto {
   final int id;
   final DateTime date;
   final TypeAbsence absence;
+  final String courId;
 
   AbsenceSimpleResponseDto({
     required this.id,
     required this.date,
     required this.absence,
+    required this.courId,
   });
 
   factory AbsenceSimpleResponseDto.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,8 @@ class AbsenceSimpleResponseDto {
       absence: TypeAbsence.values.firstWhere(
         (e) => e.toString().split('.').last == json['absence'],
       ),
+
+      courId: json['courId'] as String,
     );
   }
 
@@ -25,5 +29,6 @@ class AbsenceSimpleResponseDto {
     'id': id,
     'date': date.toIso8601String(),
     'absence': absence.toString().split('.').last,
+    'courId': courId,
   };
 }

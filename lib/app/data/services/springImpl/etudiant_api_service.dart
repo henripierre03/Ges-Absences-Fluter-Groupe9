@@ -1,69 +1,107 @@
-import 'dart:convert';
-
 import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
+import 'package:frontend_gesabsence/app/data/dto/request/pointage_request.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_response.dart';
 import 'package:frontend_gesabsence/app/data/models/absence_model.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
+import 'package:frontend_gesabsence/app/data/models/user_model.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class EtudiantApiService implements IEtudiantApiService {
+class EtudiantApiServiceSpring implements IEtudiantApiService {
   final String baseUrl = ApiConfig.baseUrl;
-  
-  @override
-  Future<List<Etudiant>> getEtudiants() async {
-    final response = await http.get(Uri.parse('$baseUrl/etudiants'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((e) => Etudiant.fromJson(e)).toList();
-    } else {
-      throw Exception('Erreur de chargement des étudiants');
+  @override
+  Future<List<Absence>> getAbsencesByEtudiantId(int etudiantId) async {
+    final url = Uri.parse('$baseUrl/api/mobile/absence/etudiant/$etudiantId');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final List<dynamic> data =
+            jsonResponse['data'] ?? jsonResponse['result'] ?? [];
+
+        return data.map((e) => Absence.fromJson(e)).toList();
+      } else {
+        throw Exception(
+          'Erreur lors du chargement des absences (code ${response.statusCode})',
+        );
+      }
+    } catch (e) {
+      throw Exception(
+        'Erreur réseau lors du chargement des absences: ${e.toString()}',
+      );
     }
   }
-  
+
   @override
-  Future<Map<String, dynamic>> getAbsenceById(String absenceId) {
-    // TODO: implement getAbsenceById
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Etudiant> getEtudiantByUserId(String id) {
-    // TODO: implement getEtudiantByUserId
-    throw UnimplementedError();
+  Future<Etudiant> getEtudiantById(int id) async {
+    final url = Uri.parse('$baseUrl/api/mobile/etudiant/id/$id');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final result = data['result'] ?? data['data'];
+        return Etudiant.fromJson(result);
+      } else {
+        throw Exception(
+          'Erreur lors de la récupération de l\'étudiant (code ${response.statusCode})',
+        );
+      }
+    } catch (e) {
+      throw Exception(
+        'Erreur réseau lors de la récupération de l\'étudiant: ${e.toString()}',
+      );
+    }
   }
 
   @override
-  Future<List<Absence>> getAbsencesByEtudiantId(int etudiantId) {
-    // TODO: implement getAbsencesByEtudiantId
-    throw UnimplementedError();
+  Future<EtudiantSimpleResponse> getEtudiantByMatricule(
+    String matricule,
+  ) async {
+    final url = Uri.parse('$baseUrl/api/mobile/etudiant/$matricule');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final result = data['result'] ?? data['data'];
+        return EtudiantSimpleResponse.fromJson(result);
+      } else {
+        throw Exception(
+          'Erreur lors de la récupération de l\'étudiant (code ${response.statusCode})',
+        );
+      }
+    } catch (e) {
+      throw Exception(
+        'Erreur réseau lors de la récupération de l\'étudiant: ${e.toString()}',
+      );
+    }
   }
-  
-  
-  
+
+  // Les autres méthodes restent à implémenter selon vos besoins
   @override
-  Future<List<Absence?>> getAllAbsences() {
-    // TODO: implement getAllAbsences
-    throw UnimplementedError();
-  }
-  
+  Future<Etudiant> getEtudiantByVigileId(PointageRequestDto pointageRequest) =>
+      throw UnimplementedError();
+
   @override
-  Future<List<Etudiant>> getAllEtudiants() {
-    // TODO: implement getAllEtudiants
-    throw UnimplementedError();
-  }
-  
+  Future<List<Etudiant>> getAllEtudiants(User userConnect) =>
+      throw UnimplementedError();
+
   @override
-  Future<Etudiant> getEtudiantById(int id) {
-    // TODO: implement getEtudiantById
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<List<Etudiant>> getEtudiantByMatricule(String matricule) {
-    // TODO: implement getEtudiantByMatricule
-    throw UnimplementedError();
-  }
-  
-  
+  Future<List<Etudiant>> getEtudiants() => throw UnimplementedError();
 }

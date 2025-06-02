@@ -1,7 +1,7 @@
 import 'package:frontend_gesabsence/app/data/models/cours_model.dart';
 
 class Salle {
-  final int id;
+  final String id;
   final String nom;
   final int capacite;
   final List<Cours> cours;
@@ -13,7 +13,7 @@ class Salle {
   });
   factory Salle.fromJson(Map<String, dynamic> json) {
     return Salle(
-      id: int.parse(json['id']?.toString() ?? '0'),
+      id: json['_id'],
       nom: json['nom'],
       capacite: json['capacite'],
       cours: (json['cours'] as List<dynamic>)
@@ -23,7 +23,7 @@ class Salle {
   }
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'nom': nom,
       'capacite': capacite,
       'cours': cours.map((c) => c.toJson()).toList(),
