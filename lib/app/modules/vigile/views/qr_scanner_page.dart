@@ -13,6 +13,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   String? result;
+  bool _hasScanned = false;
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +81,13 @@ class _QRScannerPageState extends State<QRScannerPage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData.code;
-      });
-
-      // Retourner le résultat et fermer la page
-      if (result != null) {
+      if (!_hasScanned) {
+        _hasScanned = true;
+        setState(() {
+          result = scanData.code;
+        });
         Get.back(result: result);
       }
     });
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_response.dart';
 import 'package:get/get.dart';
-import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 
-void showStudentInfoPopup(Etudiant etudiant) {
+void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
   Get.dialog(
     Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -115,11 +115,18 @@ void showStudentInfoPopup(Etudiant etudiant) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildInfoRow('Niveau:', etudiant.niveau.name),
                           const SizedBox(height: 12),
-                          _buildInfoRow('Filière:', 'GLRS'),
+                          _buildInfoRow('Niveau:', etudiant.niveau.toString()),
                           const SizedBox(height: 12),
-                          _buildInfoRow('Classe:', etudiant.classeId.toString()),
+                          _buildInfoRow(
+                            'Filière:',
+                            etudiant.filiere.toString(),
+                          ),
+                          const SizedBox(height: 12),
+                          _buildInfoRow(
+                            'Classe:',
+                            etudiant.classeId.toString(),
+                          ),
                         ],
                       ),
                     ),
