@@ -1,11 +1,9 @@
-import 'package:frontend_gesabsence/app/core/enums/type_absence.dart';
-
 class Absence {
   final String id;
   final String etudiantId;
   final String vigileId;
   final DateTime date;
-  final TypeAbsence absence;
+  final String typeAbsence;
   final String justificationId;
   final String courId;
 
@@ -14,32 +12,20 @@ class Absence {
     required this.etudiantId,
     required this.vigileId,
     required this.date,
-    required this.absence,
+    required this.typeAbsence,
     required this.justificationId,
     required this.courId,
   });
 
   factory Absence.fromJson(Map<String, dynamic> json) {
     return Absence(
-      id: json['_id'].toString(),
-      etudiantId: json['etudiantId'].toString(),
-      vigileId: json['vigileId'].toString(),
-      date: DateTime.parse(json['date']),
-      absence: TypeAbsence.values[json['absence']],
-      justificationId: json['justificationId'].toString(),
-      courId: json['coursId'].toString(),
+      id: json['id'] as String,
+      etudiantId: json['etudiantId'] as String,
+      vigileId: json['vigileId'] as String,
+      date: DateTime.parse(json['date'] as String),
+      typeAbsence: json['typeAbsence'] as String,
+      justificationId: json['justificationId'] as String,
+      courId: json['courId'] as String,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
-      'etudiantId': etudiantId,
-      'vigileId': vigileId,
-      'date': date.toIso8601String(),
-      'absence': absence.toString().split('.').last,
-      'justificationId': justificationId,
-      'coursId': courId,
-    };
   }
 }

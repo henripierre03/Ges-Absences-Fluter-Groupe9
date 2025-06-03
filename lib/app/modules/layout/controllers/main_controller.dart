@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:frontend_gesabsence/app/routes/app_pages.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Si vous utilisez SharedPreferences
 
 class MainController extends GetxController {
   var selectedIndex = 1.obs;
   var isLoggingOut = false.obs;
+  var userRole = ''.obs;
+
+  late Box authBox;
+
+  @override
+  void onInit() {
+    super.onInit();
+    authBox = Hive.box('authBox');
+    _loadUserRole();
+  }
 
   void changeTab(int index) {
-    // Si l'utilisateur clique sur l'icône logout (index 0)
     if (index == 0) {
       _handleLogout();
       return;
     }
-
     selectedIndex.value = index;
   }
 
-  /// Gérer la déconnexion avec confirmation
+  void _loadUserRole() {
+    userRole.value = authBox.get('role', defaultValue: '');
+  }
+
   void _handleLogout() {
     Get.defaultDialog(
       title: 'Déconnexion',
@@ -33,28 +45,28 @@ class MainController extends GetxController {
         _performLogout();
       },
       onCancel: () {
-        // Optionnel : action lors de l'annulation
         print('Déconnexion annulée');
       },
     );
   }
 
-  /// Effectuer la déconnexion avec nettoyage complet
   Future<void> _performLogout() async {
     isLoggingOut.value = true;
 
     try {
       Get.back();
 
-      await _clearUserData();
-
-      // Supprimer le LoginController si il existe encore
+      // Centraliser la déconnexion via LoginController
       if (Get.isRegistered<LoginController>()) {
         final loginController = Get.find<LoginController>();
-        loginController.clearForm();
+        await loginController.logout();
+        // Le loginController.logout() effectue nettoyage + redirection
+      } else {
+        // Au cas où loginController n'est pas enregistré, faire nettoyage manuel
+        await _clearUserData();
+        Get.offAllNamed(Routes.LOGIN);
       }
 
-      // Afficher un message de déconnexion
       Get.snackbar(
         'Déconnexion',
         'Vous avez été déconnecté avec succès',
@@ -63,12 +75,6 @@ class MainController extends GetxController {
         duration: const Duration(seconds: 2),
         snackPosition: SnackPosition.TOP,
       );
-
-      // Attendre un peu pour que l'utilisateur voie le message
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // Naviguer vers la page de connexion et supprimer toutes les pages précédentes
-      Get.offAllNamed(Routes.LOGIN);
     } catch (e) {
       print('Erreur lors de la déconnexion: $e');
       Get.snackbar(
@@ -84,21 +90,16 @@ class MainController extends GetxController {
     }
   }
 
-  /// Nettoyer les données utilisateur stockées
   Future<void> _clearUserData() async {
     try {
-      // Si vous utilisez SharedPreferences
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.clear(); // ou supprimer des clés spécifiques
-
-      // Si vous avez d'autres données à nettoyer, ajoutez-les ici
-      // Exemple : tokens d'authentification, données en cache, etc.
+      // Suppression des données persistantes
+      await authBox.clear();
     } catch (e) {
       print('Erreur lors du nettoyage des données: $e');
     }
   }
 
-  /// Déconnexion directe sans confirmation (pour usage programmatique)
+  /// Appelable pour forcer une déconnexion sans confirmation
   Future<void> logoutDirect() async {
     await _performLogout();
   }

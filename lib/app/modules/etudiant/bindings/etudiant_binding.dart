@@ -4,6 +4,7 @@ import 'package:frontend_gesabsence/app/data/services/implJson/justification_api
 import 'package:frontend_gesabsence/app/data/services/springImpl/absence_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/springImpl/etudiant_api_service.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/controllers/etudiant_controller.dart';
+import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:get/get.dart';
 
 class EtudiantBinding extends Bindings {
@@ -16,5 +17,6 @@ class EtudiantBinding extends Bindings {
 
     // Register the controller
     Get.lazyPut<EtudiantController>(() => EtudiantController());
+    Get.lazyPut<LoginController>(() => LoginController());
   }
 }

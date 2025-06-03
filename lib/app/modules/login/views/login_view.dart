@@ -27,8 +27,8 @@ class LoginView extends GetView<LoginController> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
-                      'assets/images/logo.jpg', 
-                      height:80,
+                      'assets/images/logo.jpg',
+                      height: 80,
                       width: 80,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
@@ -43,8 +43,6 @@ class LoginView extends GetView<LoginController> {
                 ),
 
                 const SizedBox(height: 30),
-
-                
 
                 const SizedBox(height: 40),
 

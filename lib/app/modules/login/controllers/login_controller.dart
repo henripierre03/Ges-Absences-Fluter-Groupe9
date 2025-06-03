@@ -1,135 +1,125 @@
-import 'package:flutter/widgets.dart';
-import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
-import 'package:frontend_gesabsence/app/data/models/vigile_model.dart';
-import 'package:frontend_gesabsence/app/data/services/i_login_service.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/data/services/springImpl/login_api_service.dart';
 import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
+import 'package:frontend_gesabsence/app/data/dto/request/login_request.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginController extends GetxController {
-  final ILoginApiService loginApiService = Get.find();
-
-  // Form controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final LoginApiServiceSpring loginService = LoginApiServiceSpring();
 
-  // Loading states
-  final isLoading = false.obs;
+  var isLoading = false.obs;
+  var rememberMe = false.obs;
 
-  // User type selection
-  final selectedUserType = 'vigile'.obs;
-
-  // Remember me functionality
-  final rememberMe = false.obs;
+  late Box authBox;
 
   @override
-  void onClose() {
-    // Dispose controllers to prevent memory leaks
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
+
+  void onInit() {
+    super.onInit();
+    // Ouvre la box authBox ou récupère la box déjà ouverte
+    authBox = Hive.box('authBox');
+    // Charger la valeur sauvegardée de rememberMe
+    rememberMe.value = authBox.get('rememberMe', defaultValue: false);
   }
 
-  /// Select user type (vigile or etudiant)
-  void selectUserType(String userType) {
-    selectedUserType.value = userType;
-  }
-
-  /// Toggle remember me functionality
-  void toggleRememberMe() {
-    rememberMe.value = !rememberMe.value;
-  }
-
-  /// Validate form inputs
-  bool _validateInputs() {
-    if (emailController.text.trim().isEmpty) {
-      Get.snackbar(
-        'Erreur de Validation',
-        'L\'email ne peut pas être vide',
-        backgroundColor: const Color(0xFF351F16),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 3),
-      );
-      return false;
-    }
-
-    if (passwordController.text.trim().isEmpty) {
-      Get.snackbar(
-        'Erreur de Validation',
-        'Le mot de passe ne peut pas être vide',
-        backgroundColor: const Color(0xFF351F16),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 3),
-      );
-      return false;
-    }
-
-    return true;
-  }
-
-  /// Handle login with automatic user type detection
   Future<void> login() async {
-    if (!_validateInputs()) return;
-
     isLoading.value = true;
 
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      Get.snackbar("Erreur", "Veuillez remplir tous les champs");
+      isLoading.value = false;
+      return;
+    }
+
     try {
-      final loginResult = await loginApiService.login(
-        emailController.text.trim(),
-        passwordController.text.trim(),
+      final loginRequest = LoginRequest(
+        emailController.text,
+        passwordController.text,
       );
 
-      print('Login result: $loginResult');
+      final data = await loginService.login(loginRequest);
 
-      // Mise à jour automatique du type d'utilisateur sélectionné
-      selectedUserType.value = loginResult['userType'];
+      // Vérification que les données existent
+      if (data['token'] != null) {
+        await authBox.put('token', data['token']);
+        await authBox.put('role', data['role']); // Sauvegarde rôle
+        await authBox.put(
+          'rememberMe',
+          rememberMe.value,
+        ); // Sauvegarde rememberMe
 
-      // Navigate based on user type
-      if (loginResult['userType'] == 'etudiant') {
-        final etudiant = loginResult['user'] as Etudiant;
+        String role = data['role'];
+        Get.snackbar("Succès", "Connecté en tant que $role");
 
+        redirectUserByRole(role);
+
+        // Ne pas appeler Get.offAllNamed(Routes.MAIN) ici car redirection par rôle
+      } else {
         Get.snackbar(
-          'Connexion Réussie',
-          'Bienvenue ${etudiant.nom}!',
-          backgroundColor: const Color(0xFFF58613).withOpacity(0.8),
-          colorText: const Color(0xFFFFFFFF),
-          duration: const Duration(seconds: 2),
+          "Erreur",
+          "Données de connexion invalides",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
         );
-
-        // Navigate to student dashboard
-        Get.toNamed(Routes.ETUDIANT, arguments: {'etudiantId': etudiant.id});
-      } else if (loginResult['userType'] == 'vigile') {
-        final vigile = loginResult['user'] as Vigile;
-
-        Get.snackbar(
-          'Connexion Réussie',
-          'Bienvenue ${vigile.nom}!',
-          backgroundColor: const Color(0xFFF58613).withOpacity(0.8),
-          colorText: const Color(0xFFFFFFFF),
-          duration: const Duration(seconds: 2),
-        );
-
-        // Navigate to vigile dashboard
-        Get.toNamed(Routes.MAIN, arguments: {'initialIndex': 1});
       }
     } catch (e) {
-      print('Login failed: $e');
+      print('Erreur de connexion: $e');
       Get.snackbar(
-        'Erreur de Connexion',
-        'Email ou mot de passe incorrect',
-        backgroundColor: const Color(0xFF351F16),
-        colorText: const Color(0xFFFFFFFF),
-        duration: const Duration(seconds: 4),
+        "Erreur de connexion",
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
     }
   }
 
-  /// Clear form data
-  void clearForm() {
-    emailController.clear();
-    passwordController.clear();
-    selectedUserType.value = 'vigile';
-    rememberMe.value = false;
+  /// Centralise la déconnexion et nettoyage des données
+  Future<void> logout() async {
+    final token = authBox.get('token');
+
+    try {
+      if (token != null) {
+        await loginService.logout(token);
+      }
+
+      await authBox.clear();
+
+      Get.offAllNamed(Routes.LOGIN);
+    } catch (e) {
+      print('Erreur lors de la déconnexion: $e');
+      await authBox.clear();
+      Get.offAllNamed(Routes.LOGIN);
+    }
+  }
+
+  void toggleRememberMe() {
+    rememberMe.value = !rememberMe.value;
+    authBox.put('rememberMe', rememberMe.value);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void redirectUserByRole(String role) {
+    switch (role) {
+      case 'ETUDIANT':
+        Get.offAllNamed(Routes.ETUDIANT);
+        break;
+      case 'VIGILE':
+        Get.offAllNamed(Routes.VIGILE);
+        break;
+      default:
+        Get.snackbar("Erreur", "Rôle inconnu ou non autorisé");
+        Get.offAllNamed(Routes.LOGIN);
+    }
   }
 }

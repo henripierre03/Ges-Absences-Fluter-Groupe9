@@ -1,3 +1,4 @@
+import 'package:frontend_gesabsence/app/middleware/auth_middleware.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -20,18 +21,22 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.MAIN;
+  static const INITIAL = Routes.SPLASH;
   static final etudiantBinding = EtudiantBinding();
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: Routes.ETUDIANT,
-      page: () => const EtudiantView(),
-      binding: etudiantBinding,
+      page: () =>  EtudiantView(),
+      binding: EtudiantBinding(),
+      middlewares: [
+        AuthMiddleware(allowedRoles: ['ETUDIANT']),
+      ],
     ),
     // GetPage(
     //   name: Routes.ETUDIANT_JUSTIFICATION,
@@ -47,6 +52,7 @@ class AppPages {
       name: _Paths.MAIN,
       page: () => MainView(),
       binding: MainBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.PARAMETRES,
@@ -57,6 +63,7 @@ class AppPages {
       name: _Paths.VIGILE,
       page: () => const VigileView(),
       binding: VigileBinding(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: _Paths.SPLASH,

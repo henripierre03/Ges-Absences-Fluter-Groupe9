@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:frontend_gesabsence/app/data/dto/request/absence_create_request.dart';
 import 'package:frontend_gesabsence/app/data/dto/response/absence_and_etudiant_response.dart';
 import 'package:frontend_gesabsence/app/data/services/i_absence_service.dart';
 import 'package:http/http.dart' as http;
@@ -23,9 +24,29 @@ class AbsenceApiServiceSpring implements IAbsenceService {
     }
   }
 
-  // Les autres méthodes restent à implémenter
   @override
-  Future<Absence> createAbsence(Absence absence) => throw UnimplementedError();
+  Future<Absence> createAbsence(AbsenceCreateRequestDto absence) async {
+    final url = Uri.parse('$baseUrl/api/mobile/absence/create');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        // ajoute ici un token Authorization si nécessaire
+      },
+      body: jsonEncode(absence.toJson()),
+    );
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      final absenceJson = responseBody['absence'] as Map<String, dynamic>;
+      return Absence.fromJson(absenceJson);
+    } else if (response.statusCode == 409) {
+      throw Exception('Conflit : cette absence existe déjà.');
+    } else if (response.statusCode == 400) {
+      throw Exception('Requête invalide : données manquantes ou incorrectes.');
+    } else {
+      throw Exception('Erreur serveur : code ${response.statusCode}');
+    }
+  }
 
   @override
   Future<List<AbsenceAndEtudiantResponse>> getAbsenceByVigile(
