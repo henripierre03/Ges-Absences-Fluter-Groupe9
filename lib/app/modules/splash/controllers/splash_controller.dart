@@ -8,10 +8,6 @@ class SplashController extends GetxController
   var progress = 0.0.obs;
   var statusText = 'Initialisation...'.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {

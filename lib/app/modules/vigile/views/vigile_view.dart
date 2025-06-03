@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/views/qr_scanner_page.dart';
+import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';
+import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
+import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,6 +15,7 @@ class VigileView extends GetView<VigileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: const GreetingAppBar(title: 'Accueil'),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -247,10 +251,29 @@ class VigileView extends GetView<VigileController> {
                 ),
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(
+                height: 100,
+              ), // Espace supplémentaire pour la bottom nav
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1, // Index pour l'accueil
+        onTap: (index) {
+          // Gérer la navigation selon l'index
+          switch (index) {
+            case 0:
+              _handleLogout();
+              break;
+            case 1:
+              // Déjà sur l'accueil, ne rien faire
+              break;
+            case 2:
+              Get.offAllNamed(Routes.LISTE_VIGILE);
+              break;
+          }
+        },
       ),
     );
   }
@@ -293,5 +316,27 @@ class VigileView extends GetView<VigileController> {
         colorText: Colors.white,
       );
     }
+  }
+
+  // Méthode pour gérer la déconnexion
+  void _handleLogout() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Déconnexion'),
+        content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: const Text('Annuler')),
+          TextButton(
+            onPressed: () {
+              Get.back();
+              // Ajouter ici la logique de déconnexion
+              // controller.logout();
+              Get.offAllNamed('/login'); // Ajustez selon votre routing
+            },
+            child: const Text('Déconnexion'),
+          ),
+        ],
+      ),
+    );
   }
 }

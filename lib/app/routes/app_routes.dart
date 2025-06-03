@@ -5,7 +5,7 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const ETUDIANT = _Paths.ETUDIANT;
-  static const ETUDIANT_JUSTIFICATION = '/etudiant/justification';
+  static const LISTE_VIGILE = '/liste/absences';
   static const LOGIN = _Paths.LOGIN;
   static const MAIN = _Paths.MAIN;
   static const PARAMETRES = _Paths.PARAMETRES;

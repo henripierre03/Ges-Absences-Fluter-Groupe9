@@ -26,7 +26,7 @@ class HomeView extends GetView<HomeController> {
             ElevatedButton(
   onPressed: () {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.toNamed(Routes.ETUDIANT_JUSTIFICATION);
+      Get.toNamed(Routes.LISTE_VIGILE);
     });
   },
   child: const Text('Aller à la page Justification Étudiant (Named Route)'),

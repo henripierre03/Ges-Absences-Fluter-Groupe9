@@ -1,4 +1,5 @@
 import 'package:frontend_gesabsence/app/middleware/auth_middleware.dart';
+import 'package:frontend_gesabsence/app/modules/vigile/views/vigile_liste_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/etudiant/bindings/etudiant_binding.dart';
@@ -32,17 +33,18 @@ class AppPages {
     ),
     GetPage(
       name: Routes.ETUDIANT,
-      page: () =>  EtudiantView(),
+      page: () => EtudiantView(),
       binding: EtudiantBinding(),
       middlewares: [
         AuthMiddleware(allowedRoles: ['ETUDIANT']),
       ],
     ),
-    // GetPage(
-    //   name: Routes.ETUDIANT_JUSTIFICATION,
-    //   page: () => const EtudiantJustificationView(),
-    //   binding: etudiantBinding,
-    // ),
+    GetPage(
+      name: Routes.LISTE_VIGILE,
+      page: () => const VigileListView(),
+      binding: VigileBinding(),
+      middlewares: [AuthMiddleware()],
+    ),
     GetPage(
       name: _Paths.LOGIN,
       page: () => const LoginView(),
