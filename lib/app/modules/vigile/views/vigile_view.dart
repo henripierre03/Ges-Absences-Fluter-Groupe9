@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';
 import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/views/qr_scanner_page.dart';
+import 'package:frontend_gesabsence/app/modules/vigile/views/snackbar_utils.dart';
 
 import 'package:frontend_gesabsence/app/modules/vigile/widgets/custom_navigation_bar.dart';
+import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -267,7 +269,7 @@ class VigileView extends GetView<VigileController> {
         currentIndex: _selectedIndex.value,
         onTap: (index) async {
           if (index == 0) {
-            // Gérer la déconnexion
+            // déconnexion
             final shouldLogout = await Get.dialog<bool>(
               AlertDialog(
                 title: const Text('Déconnexion'),
@@ -289,6 +291,9 @@ class VigileView extends GetView<VigileController> {
             if (shouldLogout == true) {
               await loginController.logout();
             }
+          } else if (index == 2) {
+            // aller vers la liste
+            Get.offAllNamed(Routes.LISTE_VIGILE);
           } else {
             _selectedIndex.value = index;
           }
@@ -307,17 +312,11 @@ class VigileView extends GetView<VigileController> {
         MaterialPageRoute(builder: (context) => const QRScannerPage()),
       );
 
-      if (result != null) {
+      if (result != null && result is String) {
         controller.handleQRScan(result);
       }
     } else {
-      Get.snackbar(
-        'Permission requise',
-        'L\'accès à la caméra est nécessaire pour scanner les QR codes',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      showErrorSnackbar('Permission caméra refusée');
     }
   }
 

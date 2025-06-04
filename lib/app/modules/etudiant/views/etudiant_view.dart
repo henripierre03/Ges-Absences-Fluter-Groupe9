@@ -69,13 +69,14 @@ class EtudiantView extends GetView<EtudiantController> {
     }
   }
 
+  // Exemple d'utilisation des infos étudiant dans votre vue
   Widget _buildHomePage() {
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Tableau de bord',
             style: TextStyle(
               fontSize: 24,
@@ -83,13 +84,55 @@ class EtudiantView extends GetView<EtudiantController> {
               color: Colors.black87,
             ),
           ),
-          SizedBox(height: 20),
-          Center(
-            child: Text(
-              'Bienvenue dans votre espace étudiant',
-              style: TextStyle(fontSize: 18, color: Colors.black54),
-            ),
-          ),
+          // Après le Container d'informations de l'étudiant
+          const SizedBox(height: 20),
+          Obx(() {
+            if (controller.isLoadingQrCode.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (controller.qrCodeImage.value != null) {
+              return Center(
+                child: Column(
+                  children: [
+                    const Text(
+                      'Votre QR Code',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.blueAccent),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Image.memory(
+                        controller.qrCodeImage.value!,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else if (controller.qrCodeErrorMessage.value.isNotEmpty) {
+              return Center(child: Text(controller.qrCodeErrorMessage.value));
+            } else {
+              return const SizedBox(); // Pas d'image ni d'erreur
+            }
+          }),
         ],
       ),
     );

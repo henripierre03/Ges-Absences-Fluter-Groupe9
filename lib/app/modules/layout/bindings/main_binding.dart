@@ -30,8 +30,10 @@ class MainBinding extends Bindings {
 
     // Controllers that depend on services
     Get.lazyPut<VigileController>(
-      () =>
-          VigileController(etudiantApiService: Get.find<IEtudiantApiService>()),
+      () => VigileController(
+        etudiantApiService: Get.find<IEtudiantApiService>(),
+        absenceService: Get.find<IAbsenceService>(),
+      ),
     );
   }
 }

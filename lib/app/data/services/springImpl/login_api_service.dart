@@ -52,6 +52,10 @@ class LoginApiServiceSpring implements ILoginApiService {
       if (data['matricule'] != null) {
         await authBox.put('matricule', data['matricule']);
       }
+      if (data['id'] != null) {
+        await authBox.put('userId', data['id']);
+      }
+      print("User ID saved in Hive: ${data['id']}");
 
       return data;
     } else {

@@ -15,6 +15,7 @@ class AbsenceCreateRequestDto {
     this.courId,
   });
 
+
   Map<String, dynamic> toJson() => {
     'etudiantId': etudiantId,
     'vigileId': vigileId,

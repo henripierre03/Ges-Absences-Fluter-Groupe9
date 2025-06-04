@@ -10,7 +10,7 @@ class QrCodeApiServiceSpring implements IQRCodeService {
   Future<Uint8List> getQrCode(String matricule) async {
     try {
       final response = await http
-          .get(Uri.parse('$baseUrl/api/qrCode/$matricule'))
+          .get(Uri.parse('$baseUrl/api/qrcode/$matricule'))
           .timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {

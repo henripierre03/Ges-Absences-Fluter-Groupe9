@@ -49,6 +49,9 @@ class LoginController extends GetxController {
         if (role == 'ETUDIANT' && data['matricule'] != null) {
           await authBox.put('matricule', data['matricule'].toString());
         }
+        await authBox.put('userId', data['id']);
+        print("User ID saved in Hive: ${data['id']}");
+
         Get.snackbar("Succès", "Connecté en tant que $role");
         redirectUserByRole(role);
       } else {

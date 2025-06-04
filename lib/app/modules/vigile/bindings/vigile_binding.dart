@@ -3,6 +3,7 @@ import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dar
 import 'package:frontend_gesabsence/app/data/services/springImpl/absence_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/springImpl/etudiant_api_service.dart';
 import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
+import 'package:frontend_gesabsence/app/modules/vigile/controllers/vigile_liste_controller.dart';
 import 'package:get/get.dart';
 
 import '../controllers/vigile_controller.dart';
@@ -16,8 +17,12 @@ class VigileBinding extends Bindings {
 
     // Contrôleur principal du vigile
     Get.lazyPut<VigileController>(
-      () => VigileController(etudiantApiService: Get.find()),
+      () => VigileController(
+        etudiantApiService: Get.find(),
+        absenceService: Get.find(),
+      ),
     );
     Get.lazyPut<LoginController>(() => LoginController());
+    Get.lazyPut<VigileListeController>(() => VigileListeController());
   }
 }

@@ -149,66 +149,6 @@ void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
                 ),
               ],
             ),
-
-            const SizedBox(height: 24),
-
-            // Boutons d'action
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Get.back(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade300,
-                      foregroundColor: Colors.black87,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Fermer',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                      Get.snackbar(
-                        'Action',
-                        'Étudiant ${etudiant.prenom} ${etudiant.nom} traité',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.green,
-                        colorText: Colors.white,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Valider',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
