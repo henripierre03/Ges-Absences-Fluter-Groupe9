@@ -6,7 +6,6 @@ import 'package:frontend_gesabsence/app/data/services/springImpl/etudiant_api_se
 import 'package:frontend_gesabsence/app/modules/etudiant/controllers/etudiant_controller.dart';
 import 'package:frontend_gesabsence/app/modules/layout/controllers/main_controller.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/controllers/vigile_controller.dart';
-import 'package:frontend_gesabsence/app/modules/vigile/controllers/vigile_liste_controller.dart';
 import 'package:get/get.dart';
 
 class MainBinding extends Bindings {
@@ -33,10 +32,6 @@ class MainBinding extends Bindings {
     Get.lazyPut<VigileController>(
       () =>
           VigileController(etudiantApiService: Get.find<IEtudiantApiService>()),
-    );
-
-    Get.lazyPut<VigileListController>(
-      () => VigileListController(absenceService: Get.find<IAbsenceService>()),
     );
   }
 }

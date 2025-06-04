@@ -12,7 +12,6 @@ class Etudiant extends User {
   final String classeId;
   final List<AnneeScolaire> anneesScolaires = [];
   final List<Absence> absences = [];
-  final String qrCode;
 
   Etudiant({
     required this.matricule,
@@ -25,7 +24,6 @@ class Etudiant extends User {
     required super.role,
     required this.niveau,
     required this.classeId,
-    required this.qrCode,
   });
 
   factory Etudiant.fromJson(Map<String, dynamic> json) {
@@ -42,7 +40,6 @@ class Etudiant extends User {
       matricule: json['matricule'],
       niveau: NiveauExtension.fromString(json['niveau']),
       classeId: json['classeId'],
-      qrCode: json['qrCode'],
     );
   }
 
@@ -58,7 +55,6 @@ class Etudiant extends User {
       'matricule': matricule,
       'niveau': niveau.toString().split('.').last,
       'classeId': classeId,
-      'qrCode': qrCode,
     };
   }
 }

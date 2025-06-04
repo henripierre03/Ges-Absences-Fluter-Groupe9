@@ -41,7 +41,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.LISTE_VIGILE,
-      page: () => const VigileListView(),
+      page: () =>  VigileListView(),
       binding: VigileBinding(),
       middlewares: [AuthMiddleware()],
     ),
@@ -63,7 +63,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VIGILE,
-      page: () => const VigileView(),
+      page: () =>  VigileView(),
       binding: VigileBinding(),
       middlewares: [AuthMiddleware()],
     ),

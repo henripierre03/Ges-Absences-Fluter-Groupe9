@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_gesabsence/app/modules/vigile/views/qr_scanner_page.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';
-import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
-import 'package:frontend_gesabsence/app/routes/app_pages.dart';
+import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
+import 'package:frontend_gesabsence/app/modules/vigile/views/qr_scanner_page.dart';
+
+import 'package:frontend_gesabsence/app/modules/vigile/widgets/custom_navigation_bar.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../controllers/vigile_controller.dart';
 
 class VigileView extends GetView<VigileController> {
-  const VigileView({super.key});
+  final LoginController loginController = Get.find<LoginController>();
+
+  VigileView({super.key});
+
+  final RxInt _selectedIndex = 1.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class VigileView extends GetView<VigileController> {
                   width: 280,
                   height: 280,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: Color(0xFFF58613),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
@@ -164,7 +169,7 @@ class VigileView extends GetView<VigileController> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: Color(0xFFF58613),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
@@ -259,19 +264,33 @@ class VigileView extends GetView<VigileController> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1, // Index pour l'accueil
-        onTap: (index) {
-          // Gérer la navigation selon l'index
-          switch (index) {
-            case 0:
-              _handleLogout();
-              break;
-            case 1:
-              // Déjà sur l'accueil, ne rien faire
-              break;
-            case 2:
-              Get.offAllNamed(Routes.LISTE_VIGILE);
-              break;
+        currentIndex: _selectedIndex.value,
+        onTap: (index) async {
+          if (index == 0) {
+            // Gérer la déconnexion
+            final shouldLogout = await Get.dialog<bool>(
+              AlertDialog(
+                title: const Text('Déconnexion'),
+                content: const Text('Voulez-vous vraiment vous déconnecter ?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Get.back(result: false),
+                    child: const Text('Annuler'),
+                  ),
+                  TextButton(
+                    onPressed: () => Get.back(result: true),
+                    child: const Text('Déconnecter'),
+                  ),
+                ],
+              ),
+              barrierDismissible: false,
+            );
+
+            if (shouldLogout == true) {
+              await loginController.logout();
+            }
+          } else {
+            _selectedIndex.value = index;
           }
         },
       ),
@@ -316,27 +335,5 @@ class VigileView extends GetView<VigileController> {
         colorText: Colors.white,
       );
     }
-  }
-
-  // Méthode pour gérer la déconnexion
-  void _handleLogout() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Déconnexion'),
-        content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
-        actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Annuler')),
-          TextButton(
-            onPressed: () {
-              Get.back();
-              // Ajouter ici la logique de déconnexion
-              // controller.logout();
-              Get.offAllNamed('/login'); // Ajustez selon votre routing
-            },
-            child: const Text('Déconnexion'),
-          ),
-        ],
-      ),
-    );
   }
 }

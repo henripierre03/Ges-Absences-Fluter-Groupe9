@@ -9,7 +9,6 @@ class AuthMiddleware extends GetMiddleware {
   AuthMiddleware({this.allowedRoles});
 
   @override
-  @override
   RouteSettings? redirect(String? route) {
     if (!Hive.isBoxOpen('authBox')) {
       return const RouteSettings(name: Routes.LOGIN);
@@ -33,6 +32,7 @@ class AuthMiddleware extends GetMiddleware {
           return const RouteSettings(name: Routes.LOGIN);
       }
     }
+
     return null;
   }
 }

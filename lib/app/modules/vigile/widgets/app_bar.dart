@@ -38,7 +38,7 @@ class GreetingAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                   const TextSpan(
-                    text: 'Chère Vigile',
+                    text: 'Chère Etudiant',
                     style: TextStyle(
                       color: Colors.black87,
                       fontSize: 24,

@@ -16,7 +16,6 @@ class LoginController extends GetxController {
   late Box authBox;
 
   @override
-
   void onInit() {
     super.onInit();
     // Ouvre la box authBox ou récupère la box déjà ouverte
@@ -42,21 +41,16 @@ class LoginController extends GetxController {
 
       final data = await loginService.login(loginRequest);
 
-      // Vérification que les données existent
       if (data['token'] != null) {
         await authBox.put('token', data['token']);
-        await authBox.put('role', data['role']); // Sauvegarde rôle
-        await authBox.put(
-          'rememberMe',
-          rememberMe.value,
-        ); // Sauvegarde rememberMe
-
+        await authBox.put('role', data['role']);
+        await authBox.put('rememberMe', rememberMe.value);
         String role = data['role'];
+        if (role == 'ETUDIANT' && data['matricule'] != null) {
+          await authBox.put('matricule', data['matricule'].toString());
+        }
         Get.snackbar("Succès", "Connecté en tant que $role");
-
         redirectUserByRole(role);
-
-        // Ne pas appeler Get.offAllNamed(Routes.MAIN) ici car redirection par rôle
       } else {
         Get.snackbar(
           "Erreur",

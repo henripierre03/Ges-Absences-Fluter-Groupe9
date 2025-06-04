@@ -33,7 +33,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           _NavItem(
             index: 2,
-            icon: Icons.list_alt_sharp,
+            icon: Icons.person_rounded,
             isSelected: currentIndex == 2,
             onTap: onTap,
           ),
