@@ -58,7 +58,7 @@ class EtudiantController extends GetxController {
           errorMessage.value =
               'Erreur lors du chargement des absences: ${e.toString()}';
           print('Erreur dans fetchEtudiantData (absences): $e');
-          throw e;
+          rethrow;
         }
       }
     } catch (e) {

@@ -76,14 +76,6 @@ class EtudiantView extends GetView<EtudiantController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Tableau de bord',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
           // Après le Container d'informations de l'étudiant
           const SizedBox(height: 20),
           Obx(() {

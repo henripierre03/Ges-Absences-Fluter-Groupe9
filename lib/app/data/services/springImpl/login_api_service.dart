@@ -8,6 +8,16 @@ import 'package:hive/hive.dart';
 class LoginApiServiceSpring implements ILoginApiService {
   final String baseUrl = ApiConfig.baseUrl;
 
+  Future<Map<String, String>> getAuthHeaders() async {
+    final authBox = Hive.box('authBox');
+    final token = authBox.get('token');
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
+
   @override
   Future<Map<String, dynamic>> login(LoginRequest loginRequest) async {
     final url = Uri.parse('$baseUrl/api/auth/login');
@@ -72,7 +82,7 @@ class LoginApiServiceSpring implements ILoginApiService {
     final url = Uri.parse('$baseUrl/api/auth/logout');
     final response = await http.get(
       url,
-      headers: {'Authorization': 'Bearer $token'},
+      headers: await getAuthHeaders(),
     );
 
     if (response.statusCode == 200) {

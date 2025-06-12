@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/widgets/custom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/controllers/vigile_liste_controller.dart';
 
 class VigileListView extends GetView<VigileListeController> {
-  const VigileListView({super.key});
+  final LoginController loginController = Get.find<LoginController>();
+
+  VigileListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +350,28 @@ class VigileListView extends GetView<VigileListeController> {
           // Handle navigation
           switch (index) {
             case 0:
-              // Logout logic
+              // Show logout confirmation dialog
+              Get.dialog(
+                AlertDialog(
+                  title: const Text('Déconnexion'),
+                  content: const Text(
+                    'Voulez-vous vraiment vous déconnecter ?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Get.back(result: false),
+                      child: const Text('Annuler'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.find<LoginController>().logout();
+                        Get.offAllNamed(Routes.LOGIN);
+                      },
+                      child: const Text('Déconnecter'),
+                    ),
+                  ],
+                ),
+              );
               break;
             case 1:
               // Navigate to home

@@ -4,11 +4,22 @@ import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_respon
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 import 'package:frontend_gesabsence/app/data/models/user_model.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EtudiantApiServiceSpring implements IEtudiantApiService {
   final String baseUrl = ApiConfig.baseUrl;
+
+  Future<Map<String, String>> getAuthHeaders() async {
+    final authBox = Hive.box('authBox');
+    final token = authBox.get('token');
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+  }
 
   @override
   Future<EtudiantSimpleResponse> getEtudiantByMatricule(
@@ -19,13 +30,7 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     try {
       print('URL appelée: $url');
 
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      );
+      final response = await http.get(url, headers: await getAuthHeaders());
 
       print('Status code: ${response.statusCode}');
       print('Response headers: ${response.headers}');
@@ -78,13 +83,7 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     try {
       print('Calling: $url');
 
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      );
+      final response = await http.get(url, headers: await getAuthHeaders());
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
