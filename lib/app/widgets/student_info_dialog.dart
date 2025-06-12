@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_response.dart';
 import 'package:get/get.dart';
-import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 
-void showStudentInfoPopup(Etudiant etudiant) {
+void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
   Get.dialog(
     Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -115,11 +115,18 @@ void showStudentInfoPopup(Etudiant etudiant) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildInfoRow('Niveau:', etudiant.niveau.name),
                           const SizedBox(height: 12),
-                          _buildInfoRow('Filière:', 'GLRS'),
+                          _buildInfoRow('Niveau:', etudiant.niveau.toString()),
                           const SizedBox(height: 12),
-                          _buildInfoRow('Classe:', etudiant.classeId),
+                          _buildInfoRow(
+                            'Filière:',
+                            etudiant.filiere.toString(),
+                          ),
+                          const SizedBox(height: 12),
+                          _buildInfoRow(
+                            'Classe:',
+                            etudiant.classeId.toString(),
+                          ),
                         ],
                       ),
                     ),
@@ -139,66 +146,6 @@ void showStudentInfoPopup(Etudiant etudiant) {
                       ),
                     ),
                   ],
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // Boutons d'action
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Get.back(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade300,
-                      foregroundColor: Colors.black87,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Fermer',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                      Get.snackbar(
-                        'Action',
-                        'Étudiant ${etudiant.prenom} ${etudiant.nom} traité',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.green,
-                        colorText: Colors.white,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Valider',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),

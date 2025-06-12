@@ -1,1 +1,41 @@
 GET http://localhost:3000/etudiants
+
+###
+
+GET http://localhost:3000/etudiants/1
+
+###
+
+GET http://localhost:3000/justifications
+###
+
+GET http://localhost:3000/absences/1
+
+
+###
+
+POST http://localhost:3000/justifications
+Content-Type: application/json
+
+{
+  "id": "1",
+  "etudiantId": "1",
+  "date": "2025-05-20T08:00:00.000Z",
+  "justificatif": "Maladie",
+  "validation": false
+  
+}
+###
+
+PUT http://localhost:3000/absences/1
+Content-Type: application/json
+
+{
+      "id": 1,
+      "etudiantId": 1,
+      "date": "2025-05-20T08:00:00.000Z",
+      "absence": "nonJustifiee",
+      "justificationId": null,
+      "coursId": 1
+    }
+

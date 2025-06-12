@@ -1,6 +1,7 @@
 class Justification {
   final String id;
   final String etudiantId;
+  final String absenceId;
   final DateTime date;
   final String justificatif;
   final bool validation;
@@ -8,6 +9,7 @@ class Justification {
   Justification({
     required this.id,
     required this.etudiantId,
+    required this.absenceId,
     required this.date,
     required this.justificatif,
     required this.validation,
@@ -17,6 +19,7 @@ class Justification {
     return Justification(
       id: json['_id'],
       etudiantId: json['etudiantId'],
+      absenceId: json['absenceId'],
       date: DateTime.parse(json['date']),
       justificatif: json['justificatif'],
       validation: json['validation'],
@@ -26,6 +29,7 @@ class Justification {
   Map<String, dynamic> toJson() => {
     '_id': id,
     'etudiantId': etudiantId,
+    'absenceId': absenceId,
     'date': date.toIso8601String(),
     'justificatif': justificatif,
     'validation': validation,

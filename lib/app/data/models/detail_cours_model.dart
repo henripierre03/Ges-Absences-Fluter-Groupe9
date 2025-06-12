@@ -3,8 +3,8 @@ class DetailCours {
   final DateTime date;
   final DateTime heureDebut;
   final DateTime heureFin;
-  final String coursId;
-  final String classeId;
+  final int coursId;
+  final int classeId;
 
   DetailCours({
     required this.id,
@@ -20,8 +20,8 @@ class DetailCours {
       date: DateTime.parse(json['date']),
       heureDebut: DateTime.parse(json['heureDebut']),
       heureFin: DateTime.parse(json['heureFin']),
-      coursId: json['coursId'],
-      classeId: json['classeId'],
+      coursId: int.parse(json['coursId']?.toString() ?? '0'),
+      classeId: int.parse(json['classeId']?.toString() ?? '0'),
     );
   }
   Map<String, dynamic> toJson() {

@@ -1,176 +1,198 @@
 {
-    "etudiants": [
-        {
-            "_id": "1",
-            "nom": "Sow",
-            "prenom": "Alioune",
-            "email": "alioune.sow@example.com",
-            "password": "passer",
-            "role": "etudiant",
-            "matricule": "ETU003",
-            "niveau": "Licence 3",
-            "classeId": "1",
-            "qrCode": ""
-        },
-        {
-            "_id": "2",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "email": "awa.ba@example.com",
-            "password": "passer",
-            "role": "etudiant",
-            "matricule": "ETU002",
-            "niveau": "Licence 1",
-            "classeId": "1",
-            "qrCode": ""
-        },
-        {
-            "_id": "3",
-            "nom": "Diallo",
-            "prenom": "Fatou",
-            "email": "fatou.diallo@example.com",
-            "password": "passer",
-            "role": "etudiant",
-            "userId": "12",
-            "matricule": "ETU003",
-            "niveau": "Licence 2",
-            "classeId": "2",
-            "qrCode": ""
-        }
-    ],
-    "absences": [
-        {
-            "_id": "1",
-            "etudiantId": "1",
-            "date": "2025-05-20T08:00:00.000Z",
-            "absence": "nonJustifiee",
-            "justificationId": null,
-            "coursId": "1"
-        },
-        {
-            "_id": "2",
-            "etudiantId": "2",
-            "date": "2025-05-20T08:00:00.000Z",
-            "absence": "justifiee",
-            "justificationId": "1",
-            "coursId": "1"
-        }
-    ],
-    "justifications": [
-        {
-            "_id": "1",
-            "etudiantId": "2",
-            "date": "2025-05-20T08:00:00.000Z",
-            "justificatif": "Certificat médical",
-            "validation": true
-        }
-    ],
-    "cours": [
-        {
-            "_id": "1",
-            "module": "Informatique",
-            "salleId": "1"
-        },
-        {
-            "_id": "2",
-            "module": "Mathématiques",
-            "salleId": "2"
-        }
-    ],
-    "detailCours": [
-        {
-            "_id": "1",
-            "date": "2025-05-20T08:00:00.000Z",
-            "coursId": "1",
-            "classeId": "1",
-            "heureDebut": "2025-05-20T08:00:00.000Z",
-            "heureFin": "2025-05-20T10:00:00.000Z"
-        },
-        {
-            "_id": "2",
-            "date": "2025-05-21T10:00:00.000Z",
-            "coursId": "2",
-            "classeId": "2",
-            "heureDebut": "2025-05-21T10:00:00.000Z",
-            "heureFin": "2025-05-21T12:00:00.000Z"
-        }
-    ],
-    "classes": [
-        {
-            "_id": "1",
-            "nom": "L1 Informatique",
-            "cours": [
-                "1"
-            ]
-        },
-        {
-            "_id": "2",
-            "nom": "L2 Informatique",
-            "cours": [
-                "2"
-            ]
-        }
-    ],
-    "salles": [
-        {
-            "_id": "1",
-            "nom": "Salle A",
-            "capacite": 30,
-            "cours": [
-                "1"
-            ]
-        },
-        {
-            "_id": "2",
-            "nom": "Salle B",
-            "capacite": 25,
-            "cours": [
-                "2"
-            ]
-        }
-    ],
-    "users": [
-        {
-            "_id": "10",
-            "nom": "Sow",
-            "prenom": "Alioune",
-            "email": "alioune.sow@example.com",
-            "password": "passer",
-            "role": "etudiant"
-        },
-        {
-            "_id": "11",
-            "nom": "Ba",
-            "prenom": "Awa",
-            "email": "awa.ba@example.com",
-            "password": "passer",
-            "role": "vigile"
-        },
-        {
-            "_id": "12",
-            "nom": "Diop",
-            "prenom": "Mamadou",
-            "email": "mamadou.diop@example.com",
-            "password": "passer",
-            "role": "etudiant"
-        },
-        {
-            "_id": "13",
-            "nom": "Diallo",
-            "prenom": "Fatou",
-            "email": "fatou.diallo@example.com",
-            "password": "passer",
-            "role": "etudiant"
-        }
-    ],
-    "anneesScolaires": [
-        {
-            "_id": "1",
-            "annee": "2025-05-21T10:00:00.000Z"
-        },
-        {
-            "_id": "2",
-            "annee": "2025-05-21T10:00:00.000Z"
-        }
-    ]
+  "vigiles": [
+    {
+      "id": "1",
+      "nom": "Ba",
+      "prenom": "Awa",
+      "email": "testv",
+      "password": "passer",
+      "role": "vigile"
+    }
+  ],
+  "etudiants": [
+    {
+      "id": "1",
+      "nom": "Sow",
+      "prenom": "Alioune",
+      "email": "test",
+      "password": "passer",
+      "role": "etudiant",
+      "matricule": "ETU003",
+      "niveau": "Licence 3",
+      "classeId": 1,
+      "qrCode": ""
+    },
+    {
+      "id": "2",
+      "nom": "Ba",
+      "prenom": "Awa",
+      "email": "testo",
+      "password": "passer",
+      "role": "etudiant",
+      "matricule": "ETU002",
+      "niveau": "Licence 1",
+      "classeId": 1,
+      "qrCode": ""
+    },
+    {
+      "id": "3",
+      "nom": "Diallo",
+      "prenom": "Fatou",
+      "email": "fatou.diallo@example.com",
+      "password": "passer",
+      "role": "etudiant",
+      "matricule": "ETU003",
+      "niveau": "Licence 2",
+      "classeId": 2,
+      "qrCode": ""
+    }
+  ],
+  "absences": [
+    {
+      "id": "1",
+      "etudiantId": 1,
+      "date": "2025-05-31T12:33:30.963793",
+      "absence": "justifiee",
+      "justificationId": 2,
+      "coursId": 2
+    },
+    {
+      "id": "2",
+      "etudiantId": 2,
+      "date": "2025-05-20T08:00:00.000Z",
+      "absence": "justifiee",
+      "justificationId": 1,
+      "coursId": 1
+    },
+    {
+      "id": "3",
+      "etudiantId": 1,
+      "date": "2025-05-20T08:00:00.000Z",
+      "absence": "non justifiee",
+      "justificationId": null,
+      "coursId": 1
+    }
+  ],
+  "justifications": [
+    {
+      "id": "1",
+      "etudiantId": 2,
+      "date": "2025-05-20T08:00:00.000Z",
+      "justificatif": "Certificat médical",
+      "validation": true
+    },
+    {
+      "justificatif": "Certificat médical",
+      "date": "2025-06-01T14:36:14.323254",
+      "id": "2"
+    }
+  ],
+  "cours": [
+    {
+      "id": "1",
+      "module": "Informatique",
+      "salleId": 1
+    },
+    {
+      "id": "2",
+      "module": "Mathématiques",
+      "salleId": 2
+    }
+  ],
+  "detailCours": [
+    {
+      "id": "1",
+      "date": "2025-05-20T08:00:00.000Z",
+      "coursId": 1,
+      "classeId": 1,
+      "heureDebut": "2025-05-20T08:00:00.000Z",
+      "heureFin": "2025-05-20T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "date": "2025-05-21T10:00:00.000Z",
+      "coursId": 2,
+      "classeId": 2,
+      "heureDebut": "2025-05-21T10:00:00.000Z",
+      "heureFin": "2025-05-21T12:00:00.000Z"
+    }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "nom": "L1 Informatique",
+      "cours": [
+        1
+      ]
+    },
+    {
+      "id": "2",
+      "nom": "L2 Informatique",
+      "cours": [
+        2
+      ]
+    }
+  ],
+  "salles": [
+    {
+      "id": "1",
+      "nom": "Salle A",
+      "capacite": 30,
+      "cours": [
+        1
+      ]
+    },
+    {
+      "id": "2",
+      "nom": "Salle B",
+      "capacite": 25,
+      "cours": [
+        2
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "10",
+      "nom": "Sow",
+      "prenom": "Alioune",
+      "email": "alioune.sow@example.com",
+      "password": "passer",
+      "role": "etudiant"
+    },
+    {
+      "id": "11",
+      "nom": "Ba",
+      "prenom": "Awa",
+      "email": "testv",
+      "password": "passer",
+      "role": "vigile"
+    },
+    {
+      "id": "12",
+      "nom": "Diop",
+      "prenom": "Mamadou",
+      "email": "mamadou.diop@example.com",
+      "password": "passer",
+      "role": "etudiant"
+    },
+    {
+      "id": "13",
+      "nom": "Diallo",
+      "prenom": "Fatou",
+      "email": "fatou.diallo@example.com",
+      "password": "passer",
+      "role": "etudiant"
+    }
+  ],
+  "anneesScolaires": [
+    {
+      "id": "1",
+      "annee": "2025-05-21T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "annee": "2025-05-21T10:00:00.000Z"
+    }
+  ]
 }

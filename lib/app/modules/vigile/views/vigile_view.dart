@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/modules/layout/views/greeting_app_bar.dart';
+import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/views/qr_scanner_page.dart';
+import 'package:frontend_gesabsence/app/modules/vigile/views/snackbar_utils.dart';
+
+import 'package:frontend_gesabsence/app/modules/vigile/widgets/custom_navigation_bar.dart';
+import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../controllers/vigile_controller.dart';
 
 class VigileView extends GetView<VigileController> {
-  const VigileView({super.key});
+  final LoginController loginController = Get.find<LoginController>();
+
+  VigileView({super.key});
+
+  final RxInt _selectedIndex = 1.obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: const GreetingAppBar(title: 'Accueil'),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -37,7 +48,7 @@ class VigileView extends GetView<VigileController> {
                   width: 280,
                   height: 280,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: Color(0xFFF58613),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
@@ -88,6 +99,8 @@ class VigileView extends GetView<VigileController> {
                               ),
                             ),
                           ),
+
+                          // Coins du cadre
                           const Positioned(
                             top: 40,
                             left: 40,
@@ -97,7 +110,6 @@ class VigileView extends GetView<VigileController> {
                               size: 30,
                             ),
                           ),
-                          // Coin supérieur droit
                           const Positioned(
                             top: 40,
                             right: 40,
@@ -107,7 +119,6 @@ class VigileView extends GetView<VigileController> {
                               size: 30,
                             ),
                           ),
-                          // Coin inférieur gauche
                           const Positioned(
                             bottom: 40,
                             left: 40,
@@ -117,7 +128,6 @@ class VigileView extends GetView<VigileController> {
                               size: 30,
                             ),
                           ),
-                          // Coin inférieur droit
                           const Positioned(
                             bottom: 40,
                             right: 40,
@@ -161,7 +171,7 @@ class VigileView extends GetView<VigileController> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: Color(0xFFF58613),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
@@ -194,7 +204,7 @@ class VigileView extends GetView<VigileController> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: const Icon(
-                              Icons.keyboard_arrow_down,
+                              Icons.search,
                               color: Colors.white,
                               size: 16,
                             ),
@@ -212,7 +222,7 @@ class VigileView extends GetView<VigileController> {
                         width: double.infinity,
                         height: 45,
                         child: ElevatedButton(
-                          onPressed: controller.isLoading.value
+                          onPressed: controller.isSearching.value
                               ? null
                               : () => _validateSearch(),
                           style: ElevatedButton.styleFrom(
@@ -223,7 +233,7 @@ class VigileView extends GetView<VigileController> {
                             ),
                             elevation: 0,
                           ),
-                          child: controller.isLoading.value
+                          child: controller.isSearching.value
                               ? const SizedBox(
                                   width: 20,
                                   height: 20,
@@ -248,19 +258,52 @@ class VigileView extends GetView<VigileController> {
                 ),
               ),
 
-              const SizedBox(height: 40),
-
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 100,
+              ), // Espace supplémentaire pour la bottom nav
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex.value,
+        onTap: (index) async {
+          if (index == 0) {
+            // déconnexion
+            final shouldLogout = await Get.dialog<bool>(
+              AlertDialog(
+                title: const Text('Déconnexion'),
+                content: const Text('Voulez-vous vraiment vous déconnecter ?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Get.back(result: false),
+                    child: const Text('Annuler'),
+                  ),
+                  TextButton(
+                    onPressed: () => Get.back(result: true),
+                    child: const Text('Déconnecter'),
+                  ),
+                ],
+              ),
+              barrierDismissible: false,
+            );
+
+            if (shouldLogout == true) {
+              await loginController.logout();
+            }
+          } else if (index == 2) {
+            // aller vers la liste
+            Get.offAllNamed(Routes.LISTE_VIGILE);
+          } else {
+            _selectedIndex.value = index;
+          }
+        },
       ),
     );
   }
 
   // Méthode pour ouvrir le scanner QR
   void _openQRScanner(BuildContext context) async {
-    // Vérifier les permissions de caméra
     final permissionStatus = await Permission.camera.request();
 
     if (permissionStatus.isGranted) {
@@ -269,18 +312,11 @@ class VigileView extends GetView<VigileController> {
         MaterialPageRoute(builder: (context) => const QRScannerPage()),
       );
 
-      if (result != null) {
-        // Utiliser le résultat du scan
+      if (result != null && result is String) {
         controller.handleQRScan(result);
       }
     } else {
-      Get.snackbar(
-        'Permission requise',
-        'L\'accès à la caméra est nécessaire pour scanner les QR codes',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      showErrorSnackbar('Permission caméra refusée');
     }
   }
 
@@ -288,7 +324,7 @@ class VigileView extends GetView<VigileController> {
   void _validateSearch() {
     final searchText = controller.searchController.text.trim();
     if (searchText.isNotEmpty) {
-      controller.searchStudent(searchText);
+      controller.searchStudentByMatricule(searchText);
     } else {
       Get.snackbar(
         'Erreur',

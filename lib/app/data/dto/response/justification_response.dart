@@ -1,5 +1,5 @@
 class JustificationResponseDto {
-  final String id;
+  final int? id;
   final DateTime date;
   final String justificatif;
   final bool validation;
@@ -13,7 +13,7 @@ class JustificationResponseDto {
 
   factory JustificationResponseDto.fromJson(Map<String, dynamic> json) {
     return JustificationResponseDto(
-      id: json['id'],
+      id: json['id'] != null ? int.parse(json['id'].toString()) : null,
       date: DateTime.parse(json['date']),
       justificatif: json['justificatif'],
       validation: json['validation'],
