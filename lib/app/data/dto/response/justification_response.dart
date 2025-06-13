@@ -1,29 +1,29 @@
-class JustificationResponseDto {
-  final int? id;
-  final DateTime date;
-  final String justificatif;
+class JustificationSimpleResponse {
+  final String id;
+  final String message;
   final bool validation;
+  final List<String> justificatifs;
 
-  JustificationResponseDto({
+  JustificationSimpleResponse({
     required this.id,
-    required this.date,
-    required this.justificatif,
+    required this.message,
     required this.validation,
+    required this.justificatifs,
   });
-
-  factory JustificationResponseDto.fromJson(Map<String, dynamic> json) {
-    return JustificationResponseDto(
-      id: json['id'] != null ? int.parse(json['id'].toString()) : null,
-      date: DateTime.parse(json['date']),
-      justificatif: json['justificatif'],
-      validation: json['validation'],
+  factory JustificationSimpleResponse.fromJson(Map<String, dynamic> json) {
+    return JustificationSimpleResponse(
+      id: json['id'] as String,
+      message: json['message'] as String,
+      validation: json['validation'] as bool,
+      justificatifs: List<String>.from(json['justificatif'] ?? []),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'date': date.toIso8601String(),
-    'justificatif': justificatif,
-    'validation': validation,
-  };
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'message': message,
+      'validation': validation,
+      'justificatif': justificatifs,
+    };
+  }
 }

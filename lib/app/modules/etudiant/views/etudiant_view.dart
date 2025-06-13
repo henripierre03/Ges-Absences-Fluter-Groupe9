@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justification_view.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -194,17 +195,16 @@ class EtudiantView extends GetView<EtudiantController> {
     Color statusColor;
     String statusText;
 
-    // Déterminer la couleur et le texte selon le type d'absence
-    switch (absence.typeAbsence.toLowerCase()) {
-      case 'absent':
+    switch (absence.typeAbsence.toUpperCase()) {
+      case 'ABSENCE':
         statusColor = Colors.red;
         statusText = 'Absent';
         break;
-      case 'present':
+      case 'PRESENCE':
         statusColor = Colors.green;
         statusText = 'Présent';
         break;
-      case 'retard':
+      case 'RETARD':
         statusColor = Colors.orange;
         statusText = 'En Retard';
         break;
@@ -212,6 +212,8 @@ class EtudiantView extends GetView<EtudiantController> {
         statusColor = Colors.grey;
         statusText = absence.typeAbsence;
     }
+
+    bool canJustify = absence.typeAbsence.toUpperCase() == 'ABSENCE';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -228,7 +230,7 @@ class EtudiantView extends GetView<EtudiantController> {
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // Add this
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 30,
@@ -243,41 +245,73 @@ class EtudiantView extends GetView<EtudiantController> {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min, // Add this
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start, // Add this
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      // Wrap with Flexible
+                    Expanded(
+                      // Changé de Flexible à Expanded pour plus d'espace
                       child: Text(
-                        'Cours: Flutter', // You can replace with absence.cours if available
+                        'Cours: Flutter',
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
                         ),
-                        overflow: TextOverflow.ellipsis, // Add this
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 8), // Add spacing
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: statusColor,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        statusText,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                    const SizedBox(width: 8),
+                    Row(
+                      mainAxisSize:
+                          MainAxisSize.min, // Ajouté pour optimiser l'espace
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            statusText,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
-                      ),
+                        if (canJustify) ...[
+                          const SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () => _showJustificationPopup(absence),
+                            child: Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blue.withOpacity(0.3),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ],
                 ),
@@ -298,6 +332,13 @@ class EtudiantView extends GetView<EtudiantController> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showJustificationPopup(dynamic absence) {
+    Get.dialog(
+      EtudiantJustificationViewPopup(absence: absence),
+      barrierDismissible: false,
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:frontend_gesabsence/app/data/services/i_absence_service.dart';
 import 'package:frontend_gesabsence/app/data/services/i_etudiant_api_service.dart';
-import 'package:frontend_gesabsence/app/data/services/implJson/justification_api_service.dart';
+import 'package:frontend_gesabsence/app/data/services/i_justification_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/springImpl/absence_api_service.dart';
 import 'package:frontend_gesabsence/app/data/services/springImpl/etudiant_api_service.dart';
+import 'package:frontend_gesabsence/app/data/services/springImpl/justification_api_service.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/controllers/etudiant_controller.dart';
 import 'package:frontend_gesabsence/app/modules/layout/controllers/main_controller.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/controllers/vigile_controller.dart';
@@ -24,9 +25,8 @@ class MainBinding extends Bindings {
     Get.lazyPut<AbsenceApiServiceSpring>(() => AbsenceApiServiceSpring());
     Get.lazyPut<IAbsenceService>(() => Get.find<AbsenceApiServiceSpring>());
 
-    Get.lazyPut<JustificationApiServiceImplJson>(
-      () => JustificationApiServiceImplJson(),
-    );
+    Get.lazyPut<IJustificationApiService>(() => JustificationApiService());
+    Get.lazyPut<JustificationApiService>(() => JustificationApiService());
 
     // Controllers that depend on services
     Get.lazyPut<VigileController>(

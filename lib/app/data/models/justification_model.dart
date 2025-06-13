@@ -3,7 +3,8 @@ class Justification {
   final String etudiantId;
   final String absenceId;
   final DateTime date;
-  final String justificatif;
+  final String message;
+  final List<String> justificatif;
   final bool validation;
 
   Justification({
@@ -11,26 +12,29 @@ class Justification {
     required this.etudiantId,
     required this.absenceId,
     required this.date,
+    required this.message,
     required this.justificatif,
     required this.validation,
   });
 
   factory Justification.fromJson(Map<String, dynamic> json) {
     return Justification(
-      id: json['_id'],
+      id: json['id'],
       etudiantId: json['etudiantId'],
       absenceId: json['absenceId'],
       date: DateTime.parse(json['date']),
-      justificatif: json['justificatif'],
+      message: json['message'],
+      justificatif: List<String>.from(json['justificatif'] ?? []),
       validation: json['validation'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    '_id': id,
+    'id': id,
     'etudiantId': etudiantId,
     'absenceId': absenceId,
     'date': date.toIso8601String(),
+    'message': message,
     'justificatif': justificatif,
     'validation': validation,
   };

@@ -1,5 +1,6 @@
 import 'package:frontend_gesabsence/app/core/utils/api_config.dart';
 import 'package:frontend_gesabsence/app/data/dto/request/pointage_request.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/absence_and_etudiant_response.dart';
 import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_response.dart';
 import 'package:frontend_gesabsence/app/data/models/etudiant_model.dart';
 import 'package:frontend_gesabsence/app/data/models/user_model.dart';
@@ -20,14 +21,6 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
       'Authorization': 'Bearer $token',
     };
   }
-  
-  @override
-  Future<List<Etudiant>> getEtudiantByMatricule(String matricule) {
-    // TODO: implement getEtudiantByMatricule
-    throw UnimplementedError();
-  }
-  
-  
 
   @override
   Future<EtudiantSimpleResponse> getEtudiantByMatricule(
@@ -75,15 +68,6 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
     }
   }
 
-  // Implémentation des autres méthodes pour éviter UnimplementedError
-  @override
-  Future<Etudiant> getEtudiantByVigileId(
-    PointageRequestDto pointageRequest,
-  ) async {
-    // Implémentation temporaire ou réelle selon vos besoins
-    throw UnimplementedError('Cette méthode n\'est pas encore implémentée');
-  }
-
   @override
   Future<List<Etudiant>> getAllEtudiants(User userConnect) async {
     final url = Uri.parse('$baseUrl/api/mobile/etudiants');
@@ -110,5 +94,11 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
         'Erreur réseau lors du chargement des étudiants: ${e.toString()}',
       );
     }
+  }
+
+  @override
+  Future<AbsenceAndEtudiantResponse> pointageEtudiant(PointageRequestDto request) {
+    // TODO: implement pointageEtudiant
+    throw UnimplementedError();
   }
 }

@@ -4,7 +4,7 @@ class Absence {
   final String vigileId;
   final DateTime date;
   final String typeAbsence;
-  final String justificationId;
+  final String? justificationId;
   final String courId;
 
   Absence({
@@ -13,7 +13,7 @@ class Absence {
     required this.vigileId,
     required this.date,
     required this.typeAbsence,
-    required this.justificationId,
+    this.justificationId,
     required this.courId,
   });
 
@@ -24,7 +24,7 @@ class Absence {
       vigileId: json['vigileId'] as String,
       date: DateTime.parse(json['date'] as String),
       typeAbsence: json['typeAbsence'] as String,
-      justificationId: json['justificationId'] as String,
+      justificationId: json['justificationId'] as String?,
       courId: json['courId'] as String,
     );
   }
