@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/absence_simple_response.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justification_view.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/widgets/app_bar.dart';
@@ -175,8 +176,8 @@ class EtudiantView extends GetView<EtudiantController> {
               return RefreshIndicator(
                 onRefresh: controller.refreshData,
                 child: ListView.builder(
-                  shrinkWrap: true, // Add this
-                  physics: const AlwaysScrollableScrollPhysics(), // Add this
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: controller.absences.length,
                   itemBuilder: (context, index) {
                     final absence = controller.absences[index];
@@ -191,7 +192,7 @@ class EtudiantView extends GetView<EtudiantController> {
     );
   }
 
-  Widget _buildAbsenceCard(dynamic absence) {
+  Widget _buildAbsenceCard(AbsenceSimpleResponseDto absence) {
     Color statusColor;
     String statusText;
 
@@ -213,7 +214,15 @@ class EtudiantView extends GetView<EtudiantController> {
         statusText = absence.typeAbsence;
     }
 
-    bool canJustify = absence.typeAbsence.toUpperCase() == 'ABSENCE';
+    // Logique améliorée pour déterminer si on peut justifier
+    bool canJustify =
+        absence.typeAbsence.toUpperCase() == 'ABSENCE' &&
+        !absence.hasJustification;
+
+    print('Absence ID: ${absence.id}');
+    print('Type: ${absence.typeAbsence}');
+    print('Has Justification: ${absence.hasJustification}');
+    print('Can Justify: $canJustify');
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -252,7 +261,6 @@ class EtudiantView extends GetView<EtudiantController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      // Changé de Flexible à Expanded pour plus d'espace
                       child: Text(
                         'Cours: Flutter',
                         style: const TextStyle(
@@ -264,8 +272,7 @@ class EtudiantView extends GetView<EtudiantController> {
                     ),
                     const SizedBox(width: 8),
                     Row(
-                      mainAxisSize:
-                          MainAxisSize.min, // Ajouté pour optimiser l'espace
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -285,6 +292,8 @@ class EtudiantView extends GetView<EtudiantController> {
                             ),
                           ),
                         ),
+
+                        // Affichage conditionnel des boutons
                         if (canJustify) ...[
                           const SizedBox(width: 8),
                           GestureDetector(
@@ -310,6 +319,22 @@ class EtudiantView extends GetView<EtudiantController> {
                               ),
                             ),
                           ),
+                        ] else if (absence.hasJustification &&
+                            absence.typeAbsence.toUpperCase() == 'ABSENCE') ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
                         ],
                       ],
                     ),
@@ -322,10 +347,40 @@ class EtudiantView extends GetView<EtudiantController> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  DateFormat('dd/MM/yyyy à HH:mm').format(absence.date),
-                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    Text(
+                      DateFormat('dd/MM/yyyy à HH:mm').format(absence.date),
+                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (absence.hasJustification &&
+                        absence.typeAbsence.toUpperCase() == 'ABSENCE') ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.green.withOpacity(0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Justifiée',
+                          style: TextStyle(
+                            color: Colors.green[700],
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),
@@ -335,7 +390,18 @@ class EtudiantView extends GetView<EtudiantController> {
     );
   }
 
-  void _showJustificationPopup(dynamic absence) {
+  void _showJustificationPopup(AbsenceSimpleResponseDto absence) {
+    if (absence.hasJustification) {
+      Get.snackbar(
+        'Information',
+        'Cette absence a déjà une justification',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     Get.dialog(
       EtudiantJustificationViewPopup(absence: absence),
       barrierDismissible: false,

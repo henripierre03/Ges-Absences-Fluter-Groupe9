@@ -1,11 +1,11 @@
-import 'package:frontend_gesabsence/app/data/dto/response/etudiant_all_response.dart';
+import 'package:frontend_gesabsence/app/data/dto/response/etudiant_simple_response.dart';
 
 class AbsenceAndEtudiantResponse {
   final String id;
   final DateTime? date;
   final String typeAbsence;
   final String? courId;
-  final EtudiantAllResponseDto? etudiant;
+  final EtudiantSimpleResponse? etudiant;
 
   AbsenceAndEtudiantResponse({
     required this.id,
@@ -22,7 +22,7 @@ class AbsenceAndEtudiantResponse {
       typeAbsence: json['typeAbsence'] as String,
       courId: json['courId'] as String?,
       etudiant: json['etudiant'] != null
-          ? EtudiantAllResponseDto.fromJson(json['etudiant'])
+          ? EtudiantSimpleResponse.fromJson(json['etudiant'])
           : null,
     );
   }

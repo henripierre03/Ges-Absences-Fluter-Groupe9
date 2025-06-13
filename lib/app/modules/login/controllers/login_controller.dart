@@ -35,8 +35,8 @@ class LoginController extends GetxController {
 
     try {
       final loginRequest = LoginRequest(
-        emailController.text,
-        passwordController.text,
+        emailController.text.trim(),
+        passwordController.text.trim(),
       );
 
       final data = await loginService.login(loginRequest);

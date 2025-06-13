@@ -97,8 +97,45 @@ class EtudiantApiServiceSpring implements IEtudiantApiService {
   }
 
   @override
-  Future<AbsenceAndEtudiantResponse> pointageEtudiant(PointageRequestDto request) {
-    // TODO: implement pointageEtudiant
-    throw UnimplementedError();
+  Future<AbsenceAndEtudiantResponse> pointageEtudiant(
+    PointageRequestDto request,
+  ) async {
+    final url = Uri.parse('$baseUrl/api/mobile/etudiant/pointage');
+
+    try {
+      final headers = await getAuthHeaders();
+      final body = jsonEncode(request.toJson());
+
+      print('POST $url');
+      print('Headers: $headers');
+      print('Body: $body');
+
+      final response = await http.post(url, headers: headers, body: body);
+
+      print('Status code: ${response.statusCode}');
+      print('Response: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+        final data = jsonResponse['data'] ?? jsonResponse['result'];
+
+        if (data == null) {
+          throw Exception("Réponse sans données");
+        }
+
+        return AbsenceAndEtudiantResponse.fromJson(data);
+      } else {
+        final Map<String, dynamic> errorResponse = jsonDecode(response.body);
+        final message =
+            errorResponse['result'] ??
+            errorResponse['message'] ??
+            'Erreur inconnue';
+        throw Exception('Erreur du serveur : $message');
+      }
+    } catch (e) {
+      print('Erreur pointageEtudiant: $e');
+      throw Exception('Erreur lors du pointage de l\'étudiant : $e');
+    }
   }
 }

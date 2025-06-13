@@ -1,7 +1,6 @@
-import 'package:frontend_gesabsence/app/middleware/auth_middleware.dart';
-import 'package:frontend_gesabsence/app/modules/vigile/views/vigile_liste_view.dart';
 import 'package:get/get.dart';
 
+import '../middleware/auth_middleware.dart';
 import '../modules/etudiant/bindings/etudiant_binding.dart';
 import '../modules/etudiant/views/etudiant_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -10,11 +9,14 @@ import '../modules/layout/bindings/main_binding.dart';
 import '../modules/layout/views/main_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/map/bindings/map_binding.dart';
+import '../modules/map/views/map_view.dart';
 import '../modules/parametres/bindings/parametres_binding.dart';
 import '../modules/parametres/views/parametres_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/vigile/bindings/vigile_binding.dart';
+import '../modules/vigile/views/vigile_liste_view.dart';
 import '../modules/vigile/views/vigile_view.dart';
 
 part 'app_routes.dart';
@@ -41,7 +43,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.LISTE_VIGILE,
-      page: () =>  VigileListView(),
+      page: () => VigileListView(),
       binding: VigileBinding(),
       middlewares: [AuthMiddleware()],
     ),
@@ -63,7 +65,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VIGILE,
-      page: () =>  VigileView(),
+      page: () => VigileView(),
       binding: VigileBinding(),
       middlewares: [AuthMiddleware()],
     ),
@@ -71,6 +73,11 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAP,
+      page: () => const MapView(),
+      binding: MapBinding(),
     ),
   ];
 }

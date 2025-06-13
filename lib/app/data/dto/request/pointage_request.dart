@@ -18,6 +18,10 @@ class PointageRequestDto {
   }
 
   Map<String, dynamic> toJson() {
-    return {'matricule': matricule, 'vigileId': vigileId, 'date': date};
+    return {
+      'matricule': matricule,
+      'vigileId': vigileId,
+      'date': date.toIso8601String().split('.').first,
+    };
   }
 }
