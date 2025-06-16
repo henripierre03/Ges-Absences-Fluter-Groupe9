@@ -103,4 +103,14 @@ class MainController extends GetxController {
   Future<void> logoutDirect() async {
     await _performLogout();
   }
+
+  // Aller directement à la carte
+  void goToMap() {
+    selectedIndex.value = 3;
+  }
+
+  // Retourner à l'accueil
+  void goToHome() {
+    selectedIndex.value = 1;
+  }
 }

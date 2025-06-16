@@ -23,7 +23,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             icon: Icons.logout,
             isSelected: currentIndex == 0,
             onTap: onTap,
-            isLogout: true, 
+            isLogout: true,
           ),
           _NavItem(
             index: 1,
@@ -35,6 +35,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
             index: 2,
             icon: Icons.person_rounded,
             isSelected: currentIndex == 2,
+            onTap: onTap,
+          ),
+          _NavItem(
+            index: 3,
+            icon: Icons.map,
+            isSelected: currentIndex == 3,
             onTap: onTap,
           ),
         ],

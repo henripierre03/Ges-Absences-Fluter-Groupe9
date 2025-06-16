@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_gesabsence/app/data/dto/response/absence_simple_response.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/views/etudiant_justification_view.dart';
 import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
+import 'package:frontend_gesabsence/app/modules/map/views/map_view.dart';
 import 'package:frontend_gesabsence/app/modules/vigile/widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:frontend_gesabsence/app/modules/etudiant/controllers/etudiant_controller.dart';
@@ -66,6 +67,8 @@ class EtudiantView extends GetView<EtudiantController> {
         return _buildAbsencePage();
       case 2:
         return _buildHomePage();
+      case 3:
+        return MapView();
       default:
         return _buildHomePage();
     }
