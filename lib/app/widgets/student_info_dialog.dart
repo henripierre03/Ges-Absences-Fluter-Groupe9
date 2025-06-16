@@ -15,7 +15,6 @@ void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Avatar et informations principales
             Row(
               children: [
                 // Avatar
@@ -23,7 +22,7 @@ void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
                   width: 80,
                   height: 80,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF8B4513), // Couleur marron
+                    color: const Color(0xFF8B4513),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -121,11 +120,6 @@ void showStudentInfoPopup(EtudiantSimpleResponse etudiant) {
                           _buildInfoRow(
                             'Filière:',
                             etudiant.filiere.toString(),
-                          ),
-                          const SizedBox(height: 12),
-                          _buildInfoRow(
-                            'Classe:',
-                            etudiant.classeId.toString(),
                           ),
                         ],
                       ),
