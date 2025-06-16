@@ -32,7 +32,6 @@ class AuthMiddleware extends GetMiddleware {
           return const RouteSettings(name: Routes.LOGIN);
       }
     }
-
     return null;
   }
 }

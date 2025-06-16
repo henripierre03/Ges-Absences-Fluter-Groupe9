@@ -126,8 +126,4 @@ class MapController extends GetxController {
     );
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

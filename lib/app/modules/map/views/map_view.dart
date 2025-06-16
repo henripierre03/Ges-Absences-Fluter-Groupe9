@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:frontend_gesabsence/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import '../controllers/map_controller.dart' as custom_map;
-import 'package:frontend_gesabsence/app/modules/layout/views/custom_bottom_navigation_bar.dart';
 import 'package:frontend_gesabsence/app/modules/login/controllers/login_controller.dart';
 
 class MapView extends StatelessWidget {
