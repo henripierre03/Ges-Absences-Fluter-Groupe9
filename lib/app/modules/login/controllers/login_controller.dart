@@ -18,9 +18,7 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Ouvre la box authBox ou récupère la box déjà ouverte
     authBox = Hive.box('authBox');
-    // Charger la valeur sauvegardée de rememberMe
     rememberMe.value = authBox.get('rememberMe', defaultValue: false);
   }
 
@@ -75,7 +73,6 @@ class LoginController extends GetxController {
     }
   }
 
-  /// Centralise la déconnexion et nettoyage des données
   Future<void> logout() async {
     final token = authBox.get('token');
 

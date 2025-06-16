@@ -47,7 +47,6 @@ class JustificationApiService implements IJustificationApiService {
     final request = http.MultipartRequest('POST', url);
     request.headers.addAll(headers);
 
-    // Ajouter les fichiers
     for (var file in files) {
       final mimeType = lookupMimeType(file.path) ?? 'application/octet-stream';
       final multipartFile = await http.MultipartFile.fromPath(
@@ -62,7 +61,7 @@ class JustificationApiService implements IJustificationApiService {
     request.fields['message'] = message;
     request.fields['validation'] = validation.toString();
 
-    final streamedResponse = await request.send();
+    final streamedResponse = await request.send();  
     final response = await http.Response.fromStream(streamedResponse);
 
     print('Response status: ${response.statusCode}');
@@ -72,12 +71,10 @@ class JustificationApiService implements IJustificationApiService {
       final json = jsonDecode(response.body);
       print('Parsed JSON: $json');
 
-      // Vérification de la structure de la réponse
       if (json == null) {
         throw Exception('Réponse JSON null');
       }
 
-      // Votre API renvoie les données dans 'result' et non 'data'
       final data = json['result'];
       if (data == null) {
         throw Exception('Champ result null dans la réponse');

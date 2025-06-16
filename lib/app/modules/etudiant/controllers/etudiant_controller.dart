@@ -11,6 +11,8 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+
 class EtudiantController extends GetxController {
   final IAbsenceService _absenceService = Get.find<IAbsenceService>();
   final IEtudiantApiService _etudiantService = Get.find<IEtudiantApiService>();
@@ -30,6 +32,7 @@ class EtudiantController extends GetxController {
   // Variables pour la justification
   late TextEditingController messageController;
   var selectedFiles = <File>[].obs;
+  final ImagePicker _imagePicker = ImagePicker();
 
   late Box authBox;
 
@@ -136,7 +139,87 @@ class EtudiantController extends GetxController {
     }
   }
 
-  // Méthode pour supprimer un fichier
+  Future<void> takePhoto() async {
+    try {
+      final String? choice = await Get.dialog<String>(
+        AlertDialog(
+          title: const Text('Choisir une option'),
+          content: const Text('Comment souhaitez-vous ajouter votre photo ?'),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(result: 'cancel'),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Get.back(result: 'gallery'),
+              child: const Text('Galerie'),
+            ),
+            TextButton(
+              onPressed: () => Get.back(result: 'camera'),
+              child: const Text('Appareil photo'),
+            ),
+          ],
+        ),
+      );
+
+      if (choice == null || choice == 'cancel') return;
+
+      XFile? image;
+
+      if (choice == 'camera') {
+        image = await _imagePicker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 80,
+          maxWidth: 1920,
+          maxHeight: 1080,
+        );
+      } else if (choice == 'gallery') {
+        // Sélectionner depuis la galerie
+        image = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 80,
+          maxWidth: 1920,
+          maxHeight: 1080,
+        );
+      }
+
+      if (image != null) {
+        File photoFile = File(image.path);
+        selectedFiles.add(photoFile);
+        update();
+
+        Get.snackbar(
+          'Succès',
+          'Photo ajoutée avec succès',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } catch (e) {
+      String errorMessage = 'Erreur lors de la prise de photo';
+
+      if (e.toString().contains('camera_access_denied')) {
+        errorMessage =
+            'Accès à l\'appareil photo refusé. Veuillez autoriser l\'accès dans les paramètres.';
+      } else if (e.toString().contains('photo_access_denied')) {
+        errorMessage =
+            'Accès à la galerie refusé. Veuillez autoriser l\'accès dans les paramètres.';
+      }
+
+      Get.snackbar(
+        'Erreur',
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+      print('Erreur takePhoto: $e');
+    }
+  }
+
   void removeFile(File file) {
     selectedFiles.remove(file);
     update();
@@ -144,7 +227,6 @@ class EtudiantController extends GetxController {
 
   Future<void> submitJustification(String absenceId) async {
     try {
-      // Validation
       if (messageController.text.trim().isEmpty) {
         Get.snackbar(
           'Champ requis',
@@ -174,7 +256,6 @@ class EtudiantController extends GetxController {
       print('Message: ${messageController.text.trim()}');
       print('Nombre de fichiers: ${selectedFiles.length}');
 
-      // Appel au service de justification
       final result = await _justificationService.create(
         absenceId: absenceId,
         files: selectedFiles,
@@ -185,8 +266,7 @@ class EtudiantController extends GetxController {
 
       print('Justification créée avec succès: ${result.id}');
 
-      // Succès
-      Get.back(); // Fermer la popup
+      Get.back();
       Get.snackbar(
         'Succès',
         'Votre justification a été envoyée avec succès',
@@ -195,11 +275,9 @@ class EtudiantController extends GetxController {
         colorText: Colors.white,
       );
 
-      // Réinitialiser les champs
       messageController.clear();
       selectedFiles.clear();
 
-      // Rafraîchir les données
       await fetchEtudiantData();
     } on FormatException catch (e) {
       Get.snackbar(
@@ -214,7 +292,6 @@ class EtudiantController extends GetxController {
       String errorMessage = 'Erreur lors de l\'envoi de la justification';
       Color backgroundColor = Colors.red;
 
-      // Gérer les erreurs spécifiques
       if (e.toString().contains('409') || e.toString().contains('CONFLICT')) {
         errorMessage = 'Une justification existe déjà pour cette absence';
         backgroundColor = Colors.orange;

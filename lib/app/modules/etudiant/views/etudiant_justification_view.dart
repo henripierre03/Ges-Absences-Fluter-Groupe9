@@ -104,39 +104,83 @@ class EtudiantJustificationViewPopup extends GetView<EtudiantController> {
               ),
               const SizedBox(height: 8),
 
-              // Bouton ajouter fichiers
-              GetBuilder<EtudiantController>(
-                builder: (controller) => GestureDetector(
-                  onTap: () => controller.pickFiles(),
-                  child: Container(
-                    height: 60,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey[300]!,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_photo_alternate,
-                          color: Colors.grey[600],
-                          size: 24,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Ajouter des photos ou PDF',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 16,
+              // Boutons pour ajouter des fichiers ou prendre une photo
+              Row(
+                children: [
+                  Expanded(
+                    child: GetBuilder<EtudiantController>(
+                      builder: (controller) => GestureDetector(
+                        onTap: () => controller.pickFiles(),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey[300]!,
+                              style: BorderStyle.solid,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.attach_file,
+                                color: Colors.grey[600],
+                                size: 20,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'Choisir fichier',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: GetBuilder<EtudiantController>(
+                      builder: (controller) => GestureDetector(
+                        onTap: () => controller.takePhoto(),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.blue[300]!,
+                              style: BorderStyle.solid,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.blue.withOpacity(0.05),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                color: Colors.blue[600],
+                                size: 20,
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'Prendre photo',
+                                style: TextStyle(
+                                  color: Colors.blue[600],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 12),
 
@@ -162,10 +206,25 @@ class EtudiantJustificationViewPopup extends GetView<EtudiantController> {
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
-                                    child: Text(
-                                      file.path.split('/').last,
-                                      style: const TextStyle(fontSize: 14),
-                                      overflow: TextOverflow.ellipsis,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          file.path.split('/').last,
+                                          style: const TextStyle(fontSize: 14),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        if (_isImageFile(file.path))
+                                          Text(
+                                            'Photo',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.blue[600],
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
                                   IconButton(
@@ -254,5 +313,10 @@ class EtudiantJustificationViewPopup extends GetView<EtudiantController> {
       default:
         return Icons.attach_file;
     }
+  }
+
+  bool _isImageFile(String filePath) {
+    String extension = filePath.split('.').last.toLowerCase();
+    return ['jpg', 'jpeg', 'png'].contains(extension);
   }
 }

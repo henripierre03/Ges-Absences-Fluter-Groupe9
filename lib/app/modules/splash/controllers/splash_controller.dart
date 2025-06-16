@@ -16,10 +16,8 @@ class SplashController extends GetxController
   }
 
   Future<void> _initializeApp() async {
-    // Simulation du chargement avec animations
     await _simulateLoading();
 
-    // Vérification de l'authentification et redirection
     await _handleAuthentication();
   }
 
@@ -53,7 +51,6 @@ class SplashController extends GetxController
 
     isLoading.value = false;
 
-    // Attendre un peu pour l'animation finale
     await Future.delayed(const Duration(milliseconds: 800));
 
     if (token == null || role == null) {
